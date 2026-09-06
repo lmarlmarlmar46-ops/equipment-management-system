@@ -4,10 +4,17 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 // Import routes
+const authRouter = require('./routes/auth');
 const employeesRouter = require('./routes/employees');
 const equipmentRouter = require('./routes/equipment');
 const allocationsRouter = require('./routes/allocations');
 const dashboardRouter = require('./routes/dashboard');
+const maintenanceRouter = require('./routes/maintenance');
+const warrantiesRouter = require('./routes/warranties');
+const reservationsRouter = require('./routes/reservations');
+const serviceRequestsRouter = require('./routes/service-requests');
+const reportsRouter = require('./routes/reports');
+const notificationsRouter = require('./routes/notifications');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,12 +24,20 @@ app.get('/', (req, res) => {
   res.json({ 
     status: 'OK', 
     message: 'EquipTrack API is running',
+    version: '2.0.0',
     endpoints: {
       health: '/api/health',
+      auth: '/api/auth (login, register, me)',
       dashboard: '/api/dashboard/stats',
       employees: '/api/employees',
       equipment: '/api/equipment',
-      allocations: '/api/allocations'
+      allocations: '/api/allocations',
+      maintenance: '/api/maintenance',
+      warranties: '/api/warranties',
+      reservations: '/api/reservations',
+      serviceRequests: '/api/service-requests',
+      reports: '/api/reports',
+      notifications: '/api/notifications'
     }
   });
 });
@@ -39,10 +54,17 @@ app.use((req, res, next) => {
 });
 
 // API Routes
+app.use('/api/auth', authRouter);
 app.use('/api/employees', employeesRouter);
 app.use('/api/equipment', equipmentRouter);
 app.use('/api/allocations', allocationsRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/maintenance', maintenanceRouter);
+app.use('/api/warranties', warrantiesRouter);
+app.use('/api/reservations', reservationsRouter);
+app.use('/api/service-requests', serviceRequestsRouter);
+app.use('/api/reports', reportsRouter);
+app.use('/api/notifications', notificationsRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

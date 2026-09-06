@@ -10,8 +10,13 @@
     "vercel-build": "vite build"
   },
   "dependencies": {
+    "axios": "^1.20.0",
+    "chart.js": "^4.5.1",
+    "date-fns": "^4.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^18.2.0",
+    "react-qr-code": "^2.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.0",
