@@ -327,7 +327,7 @@
   margin-bottom: 0.5rem;
 }
 
-/* Password Input Wrapper */
+/* Password Toggle Styles */
 .password-input-wrapper {
   position: relative;
   display: flex;
@@ -335,8 +335,8 @@
 }
 
 .password-input-wrapper input {
-  flex: 1;
   padding-right: 3rem;
+  flex: 1;
 }
 
 .password-toggle {
@@ -346,21 +346,19 @@
   border: none;
   cursor: pointer;
   padding: 0.5rem;
-  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
-  transition: color 0.3s ease;
-  z-index: 10;
+  font-size: 1.25rem;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }
 
 .password-toggle:hover {
-  color: #d4af37;
+  opacity: 1;
 }
 
 .password-toggle:focus {
-  outline: 2px solid #d4af37;
-  outline-offset: 2px;
+  outline: 2px solid rgba(212, 175, 55, 0.5);
   border-radius: 4px;
 }
