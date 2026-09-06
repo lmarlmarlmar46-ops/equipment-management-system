@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://equipment-management-system-production-7e9c.up.railway.app',
         changeOrigin: true
       }
     }
