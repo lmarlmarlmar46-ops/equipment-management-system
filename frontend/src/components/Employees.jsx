@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import LoadingSkeleton from './LoadingSkeleton';
 
-function Employees() {
+function Employees({ showToast }) {
   const [employees, setEmployees] = useState([]);
-  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [formErrors, setFormErrors] = useState({});
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,11 +24,8 @@ function Employees() {
     fetchEmployees();
   }, []);
 
-  useEffect(() => {
-    filterEmployees();
-  }, [employees, searchQuery, filterStatus]);
-
-  const filterEmployees = () => {
+  // Filter, sort, and paginate employees
+  const filteredAndSortedEmployees = useMemo(() => {
     let filtered = [...employees];
     
     // Apply search filter
@@ -41,24 +42,79 @@ function Employees() {
     if (filterStatus !== 'all') {
       filtered = filtered.filter(emp => emp.status === filterStatus);
     }
+
+    // Apply sorting
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        const aValue = a[sortConfig.key] || '';
+        const bValue = b[sortConfig.key] || '';
+        
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
     
-    setFilteredEmployees(filtered);
+    return filtered;
+  }, [employees, searchQuery, filterStatus, sortConfig]);
+
+  const paginatedEmployees = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return filteredAndSortedEmployees.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredAndSortedEmployees, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredAndSortedEmployees.length / itemsPerPage);
+
+  const handleSort = (key) => {
+    setSortConfig(prev => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Invalid email format';
+    }
+    
+    if (!formData.department.trim()) {
+      errors.department = 'Department is required';
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const fetchEmployees = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/employees');
       const data = await response.json();
       setEmployees(data);
-      setLoading(false);
     } catch (error) {
       console.error('Error fetching employees:', error);
+      if (showToast) showToast('error', 'Error', 'Failed to load employees');
+    } finally {
       setLoading(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      if (showToast) showToast('warning', 'Validation Error', 'Please fix the errors in the form');
+      return;
+    }
+
     try {
       const url = editingId ? `/api/employees/${editingId}` : '/api/employees';
       const method = editingId ? 'PUT' : 'POST';
@@ -72,9 +128,14 @@ function Employees() {
       if (response.ok) {
         fetchEmployees();
         resetForm();
+        if (showToast) {
+          showToast('success', editingId ? 'Updated!' : 'Created!', 
+            `Employee ${editingId ? 'updated' : 'created'} successfully`);
+        }
       }
     } catch (error) {
       console.error('Error saving employee:', error);
+      if (showToast) showToast('error', 'Error', 'Failed to save employee');
     }
   };
 
@@ -82,15 +143,21 @@ function Employees() {
     setFormData(employee);
     setEditingId(employee.id);
     setShowForm(true);
+    setFormErrors({});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
       try {
-        await fetch(`/api/employees/${id}`, { method: 'DELETE' });
-        fetchEmployees();
+        const response = await fetch(`/api/employees/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+          fetchEmployees();
+          if (showToast) showToast('success', 'Deleted!', 'Employee deleted successfully');
+        }
       } catch (error) {
         console.error('Error deleting employee:', error);
+        if (showToast) showToast('error', 'Error', 'Failed to delete employee');
       }
     }
   };
@@ -105,13 +172,19 @@ function Employees() {
     });
     setEditingId(null);
     setShowForm(false);
+    setFormErrors({});
   };
 
   if (loading) {
     return (
-      <div className="loading">
-        <div className="loading-spinner"></div>
-        <div className="loading-text">Loading employees...</div>
+      <div className="employees-container">
+        <div className="section-header">
+          <div>
+            <h2>Employee Management</h2>
+            <p className="section-subtitle">Manage employee records and assignments</p>
+          </div>
+        </div>
+        <LoadingSkeleton type="table" count={8} />
       </div>
     );
   }
@@ -158,7 +231,7 @@ function Employees() {
           </select>
         </div>
         <div className="results-count">
-          {filteredEmployees.length} of {employees.length} employees
+          {filteredAndSortedEmployees.length} of {employees.length} employees
         </div>
       </div>
 
@@ -226,7 +299,7 @@ function Employees() {
             </tr>
           </thead>
           <tbody>
-            {filteredEmployees.length === 0 ? (
+            {filteredAndSortedEmployees.length === 0 ? (
               <tr>
                 <td colSpan="6" className="empty-state">
                   {searchQuery || filterStatus !== 'all' ? (
@@ -249,7 +322,7 @@ function Employees() {
                 </td>
               </tr>
             ) : (
-              filteredEmployees.map((employee) => (
+              paginatedEmployees.map((employee) => (
                 <tr key={employee.id}>
                   <td>
                     <div className="employee-info">

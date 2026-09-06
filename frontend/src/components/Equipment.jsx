@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import LoadingSkeleton from './LoadingSkeleton';
 
-function Equipment() {
+function Equipment({ showToast }) {
   const [equipment, setEquipment] = useState([]);
-  const [filteredEquipment, setFilteredEquipment] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [formData, setFormData] = useState({
     name: '',
     category: '',
@@ -25,11 +28,8 @@ function Equipment() {
     fetchEquipment();
   }, []);
 
-  useEffect(() => {
-    filterEquipment();
-  }, [equipment, searchQuery, filterStatus]);
-
-  const filterEquipment = () => {
+  // Filter, sort, and paginate equipment using useMemo for performance
+  const filteredAndSortedEquipment = useMemo(() => {
     let filtered = [...equipment];
     
     // Apply search filter
@@ -47,18 +47,57 @@ function Equipment() {
     if (filterStatus !== 'all') {
       filtered = filtered.filter(item => item.status === filterStatus);
     }
+
+    // Apply sorting
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        const aValue = a[sortConfig.key] || '';
+        const bValue = b[sortConfig.key] || '';
+        
+        if (aValue < bValue) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (aValue > bValue) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
     
-    setFilteredEquipment(filtered);
+    return filtered;
+  }, [equipment, searchQuery, filterStatus, sortConfig]);
+
+  // Paginated equipment
+  const paginatedEquipment = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredAndSortedEquipment.slice(startIndex, endIndex);
+  }, [filteredAndSortedEquipment, currentPage, itemsPerPage]);
+
+  const totalPages = Math.ceil(filteredAndSortedEquipment.length / itemsPerPage);
+
+  const handleSort = (key) => {
+    setSortConfig(prev => ({
+      key,
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+    }));
   };
 
   const fetchEquipment = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/equipment');
       const data = await response.json();
       setEquipment(data);
-      setLoading(false);
+      if (showToast) {
+        showToast('success', 'Success', 'Equipment data loaded', false);
+      }
     } catch (error) {
       console.error('Error fetching equipment:', error);
+      if (showToast) {
+        showToast('error', 'Error', 'Failed to load equipment data');
+      }
+    } finally {
       setLoading(false);
     }
   };
@@ -78,9 +117,16 @@ function Equipment() {
       if (response.ok) {
         fetchEquipment();
         resetForm();
+        if (showToast) {
+          showToast('success', editingId ? 'Updated!' : 'Created!', 
+            `Equipment ${editingId ? 'updated' : 'created'} successfully`);
+        }
       }
     } catch (error) {
       console.error('Error saving equipment:', error);
+      if (showToast) {
+        showToast('error', 'Error', 'Failed to save equipment');
+      }
     }
   };
 
@@ -88,15 +134,24 @@ function Equipment() {
     setFormData(item);
     setEditingId(item.id);
     setShowForm(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this equipment?')) {
       try {
-        await fetch(`/api/equipment/${id}`, { method: 'DELETE' });
-        fetchEquipment();
+        const response = await fetch(`/api/equipment/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+          fetchEquipment();
+          if (showToast) {
+            showToast('success', 'Deleted!', 'Equipment deleted successfully');
+          }
+        }
       } catch (error) {
         console.error('Error deleting equipment:', error);
+        if (showToast) {
+          showToast('error', 'Error', 'Failed to delete equipment');
+        }
       }
     }
   };
@@ -130,9 +185,14 @@ function Equipment() {
 
   if (loading) {
     return (
-      <div className="loading">
-        <div className="loading-spinner"></div>
-        <div className="loading-text">Loading equipment...</div>
+      <div className="equipment-container">
+        <div className="section-header">
+          <div>
+            <h2>Equipment Management</h2>
+            <p className="section-subtitle">Manage and track all your equipment inventory</p>
+          </div>
+        </div>
+        <LoadingSkeleton type="table" count={8} />
       </div>
     );
   }
@@ -181,7 +241,7 @@ function Equipment() {
           </select>
         </div>
         <div className="results-count">
-          {filteredEquipment.length} of {equipment.length} items
+          {filteredAndSortedEquipment.length} of {equipment.length} items
         </div>
       </div>
 
@@ -275,40 +335,82 @@ function Equipment() {
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Brand/Model</th>
+              <th 
+                className={`table-header-cell sortable ${sortConfig.key === 'name' ? `sorted-${sortConfig.direction}` : ''}`}
+                onClick={() => handleSort('name')}
+                title="Click to sort"
+              >
+                Name
+              </th>
+              <th 
+                className={`table-header-cell sortable ${sortConfig.key === 'category' ? `sorted-${sortConfig.direction}` : ''}`}
+                onClick={() => handleSort('category')}
+                title="Click to sort"
+              >
+                Category
+              </th>
+              <th 
+                className={`table-header-cell sortable ${sortConfig.key === 'brand' ? `sorted-${sortConfig.direction}` : ''}`}
+                onClick={() => handleSort('brand')}
+                title="Click to sort"
+              >
+                Brand/Model
+              </th>
               <th>Serial Number</th>
-              <th>Status</th>
-              <th>Condition</th>
+              <th 
+                className={`table-header-cell sortable ${sortConfig.key === 'status' ? `sorted-${sortConfig.direction}` : ''}`}
+                onClick={() => handleSort('status')}
+                title="Click to sort"
+              >
+                Status
+              </th>
+              <th 
+                className={`table-header-cell sortable ${sortConfig.key === 'condition' ? `sorted-${sortConfig.direction}` : ''}`}
+                onClick={() => handleSort('condition')}
+                title="Click to sort"
+              >
+                Condition
+              </th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredEquipment.length === 0 ? (
+            {filteredAndSortedEquipment.length === 0 ? (
               <tr>
-                <td colSpan="7" className="empty-state">
-                  {searchQuery || filterStatus !== 'all' ? (
-                    <>
-                      <div className="empty-state-icon">🔍</div>
-                      <div className="empty-state-title">No matching equipment found</div>
-                      <div className="empty-state-description">
-                        Try adjusting your search or filters
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="empty-state-icon">💻</div>
-                      <div className="empty-state-title">No equipment yet</div>
-                      <div className="empty-state-description">
-                        Add your first equipment item above to get started
-                      </div>
-                    </>
-                  )}
+                <td colSpan="7">
+                  <div className="empty-state">
+                    {searchQuery || filterStatus !== 'all' ? (
+                      <>
+                        <div className="empty-state-icon">🔍</div>
+                        <div className="empty-state-title">No matching equipment found</div>
+                        <div className="empty-state-description">
+                          Try adjusting your search or filters
+                        </div>
+                        <div className="empty-state-actions">
+                          <button className="btn-secondary" onClick={() => { setSearchQuery(''); setFilterStatus('all'); }}>
+                            Clear Filters
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="empty-state-icon">💻</div>
+                        <div className="empty-state-title">No equipment yet</div>
+                        <div className="empty-state-description">
+                          Add your first equipment item to start tracking your inventory
+                        </div>
+                        <div className="empty-state-actions">
+                          <button className="btn-primary" onClick={() => setShowForm(true)}>
+                            ➕ Add Equipment
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </td>
               </tr>
             ) : (
-              filteredEquipment.map((item) => (
+              paginatedEquipment.map((item) => (
                 <tr key={item.id}>
                   <td>
                     <div className="item-name">
@@ -345,6 +447,93 @@ function Equipment() {
             )}
           </tbody>
         </table>
+
+        {/* Pagination Controls */}
+        {filteredAndSortedEquipment.length > 0 && (
+          <div className="pagination">
+            <div className="pagination-info">
+              Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredAndSortedEquipment.length)} of {filteredAndSortedEquipment.length} items
+            </div>
+            <div className="pagination-controls">
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                aria-label="First page"
+              >
+                ⏮
+              </button>
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                ◀
+              </button>
+              
+              {[...Array(totalPages)].map((_, i) => {
+                const pageNum = i + 1;
+                // Show first, last, current, and adjacent pages
+                if (
+                  pageNum === 1 ||
+                  pageNum === totalPages ||
+                  (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                ) {
+                  return (
+                    <button
+                      key={pageNum}
+                      className={`pagination-button ${currentPage === pageNum ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(pageNum)}
+                      aria-label={`Page ${pageNum}`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                } else if (
+                  pageNum === currentPage - 2 ||
+                  pageNum === currentPage + 2
+                ) {
+                  return <span key={pageNum} style={{ padding: '0.5rem' }}>...</span>;
+                }
+                return null;
+              })}
+
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                ▶
+              </button>
+              <button
+                className="pagination-button"
+                onClick={() => setCurrentPage(totalPages)}
+                disabled={currentPage === totalPages}
+                aria-label="Last page"
+              >
+                ⏭
+              </button>
+            </div>
+            <div className="page-size-selector">
+              <span>Items per page:</span>
+              <select
+                value={itemsPerPage}
+                onChange={(e) => {
+                  setItemsPerPage(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                aria-label="Items per page"
+              >
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
