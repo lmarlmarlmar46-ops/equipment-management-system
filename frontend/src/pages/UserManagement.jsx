@@ -121,7 +121,7 @@ const UserManagement = () => {
   return (
     <div className="user-management">
       <div className="page-header">
-        <h1>👥 User Management</h1>
+        <h1>User Management</h1>
         <p>Manage user roles and permissions</p>
       </div>
 
@@ -170,7 +170,7 @@ const UserManagement = () => {
                           onClick={() => handlePromote(u.id, u.role)}
                           disabled={promoting === u.id}
                         >
-                          {promoting === u.id ? 'Processing...' : '⬆️ Promote'}
+                          {promoting === u.id ? 'Processing...' : 'Promote'}
                         </button>
                       )}
                       {u.role !== 'employee' && (
@@ -179,7 +179,7 @@ const UserManagement = () => {
                           onClick={() => handleDemote(u.id, u.role)}
                           disabled={promoting === u.id}
                         >
-                          {promoting === u.id ? 'Processing...' : '⬇️ Demote'}
+                          {promoting === u.id ? 'Processing...' : 'Demote'}
                         </button>
                       )}
                     </div>
@@ -192,7 +192,7 @@ const UserManagement = () => {
       </div>
 
       <div className="info-box">
-        <h3>ℹ️ Role Permissions</h3>
+        <h3>Role Permissions</h3>
         <ul>
           <li><strong>Employee:</strong> Can request equipment, view own equipment, track requests</li>
           <li><strong>Manager:</strong> Can approve requests, issue equipment, manage allocations + employee permissions</li>
