@@ -2458,3 +2458,188 @@ p, span, div, label, button {
 .page-header p {
   color: #ffffff !important;
 }
+
+
+/* ========================================
+   NAVIGATION BUTTON FIXES
+   ======================================== */
+
+/* Fix navigation button text and styling */
+.nav-button {
+  background: rgba(218, 165, 32, 0.1) !important;
+  border: 1px solid rgba(218, 165, 32, 0.3) !important;
+  color: #ffffff !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.nav-button:hover {
+  background: rgba(218, 165, 32, 0.2) !important;
+  border-color: var(--accent-gold) !important;
+  color: #ffffff !important;
+}
+
+.nav-button.active {
+  background: rgba(218, 165, 32, 0.25) !important;
+  border-color: var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+  font-weight: 600 !important;
+}
+
+.nav-button svg {
+  color: currentColor !important;
+  opacity: 0.9;
+}
+
+.nav-button.active svg {
+  color: var(--accent-gold) !important;
+  opacity: 1;
+}
+
+/* Secondary button (Request) styling */
+.nav-button-secondary {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%) !important;
+  border: none !important;
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3) !important;
+}
+
+.nav-button-secondary:hover {
+  background: linear-gradient(135deg, #d4af37 0%, #c89b1a 100%) !important;
+  color: #000000 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(218, 165, 32, 0.4) !important;
+}
+
+.nav-button-secondary svg {
+  color: #1a1a1a !important;
+}
+
+/* Highlight buttons (IT Operations, Users) */
+.nav-button-highlight {
+  background: rgba(218, 165, 32, 0.15) !important;
+  border: 1px solid var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+  font-weight: 600 !important;
+}
+
+.nav-button-highlight:hover {
+  background: rgba(218, 165, 32, 0.25) !important;
+  border-color: var(--accent-gold) !important;
+  color: var(--accent-gold) !important;
+}
+
+.nav-button-highlight svg {
+  color: var(--accent-gold) !important;
+}
+
+/* Ensure navigation bar has proper background */
+.app-nav {
+  background: #2d1414 !important;
+  border-bottom: 1px solid rgba(218, 165, 32, 0.2) !important;
+  padding: 1rem 1.5rem !important;
+}
+
+
+/* ========================================
+   COMPREHENSIVE TEXT VISIBILITY FIXES
+   ======================================== */
+
+/* Header fixes */
+.app-header {
+  background: #2d1414 !important;
+  color: #ffffff !important;
+}
+
+.logo-section * {
+  color: #ffffff !important;
+}
+
+.logo-text {
+  color: var(--accent-gold) !important;
+}
+
+/* User menu fixes */
+.user-details * {
+  color: #ffffff !important;
+}
+
+.user-role {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Dropdown icon */
+.dropdown-icon,
+.dropdown-icon svg {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Table and card text */
+table,
+table th,
+table td {
+  color: #ffffff !important;
+}
+
+.card,
+.info-card,
+.stat-card {
+  color: #ffffff !important;
+}
+
+/* Form elements */
+input,
+select,
+textarea {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(218, 165, 32, 0.3) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Button text */
+button {
+  color: #ffffff !important;
+}
+
+button.btn-primary {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%) !important;
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+}
+
+/* Links */
+a {
+  color: var(--accent-gold) !important;
+}
+
+a:hover {
+  color: #d4af37 !important;
+}
+
+/* Status badges */
+.badge,
+.status-badge,
+.role-badge {
+  color: var(--accent-gold) !important;
+  border-color: var(--accent-gold) !important;
+}
+
+/* Footer */
+.app-footer,
+.app-footer * {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Ensure all children inherit proper colors */
+* {
+  color: inherit;
+}
