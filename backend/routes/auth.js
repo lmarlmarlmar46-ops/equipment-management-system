@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const db = require('../database');
+const db = require('../database-pg');
 const { JWT_SECRET, authenticateToken } = require('../middleware/auth');
 
 // Register new user
@@ -21,63 +21,59 @@ router.post('/register', async (req, res) => {
     }
 
     // Check if user already exists
-    db.get('SELECT id FROM users WHERE username = ? OR email = ?', [username, email], async (err, existingUser) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
+    const existingUser = await db.get(
+      'SELECT id FROM users WHERE username = $1 OR email = $2',
+      [username, email]
+    );
 
-      if (existingUser) {
-        return res.status(400).json({ error: 'Username or email already exists' });
-      }
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username or email already exists' });
+    }
 
-      // Hash password
-      const salt = await bcrypt.genSalt(10);
-      const password_hash = await bcrypt.hash(password, salt);
+    // Hash password
+    const password_hash = await bcrypt.hash(password, 10);
 
-      const id = uuidv4();
-      const created_at = new Date().toISOString();
+    const id = uuidv4();
+    const created_at = new Date().toISOString();
 
-      db.run(
-        `INSERT INTO users (id, username, email, password_hash, role, employee_id, status, created_at, updated_at) 
-         VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?)`,
-        [id, username, email, password_hash, role, employee_id || null, created_at, created_at],
-        function (err) {
-          if (err) {
-            return res.status(500).json({ error: err.message });
-          }
+    await db.run(
+      `INSERT INTO users (id, username, email, password_hash, role, employee_id, status, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, 'active', $7, $8)`,
+      [id, username, email, password_hash, role, employee_id || null, created_at, created_at]
+    );
 
-          // Generate JWT token
-          const token = jwt.sign(
-            { id, username, email, role },
-            JWT_SECRET,
-            { expiresIn: '7d' }
-          );
+    // Generate JWT token
+    const token = jwt.sign(
+      { id, username, email, role },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
-          res.status(201).json({
-            message: 'User registered successfully',
-            user: { id, username, email, role },
-            token
-          });
-        }
-      );
+    res.status(201).json({
+      message: 'User registered successfully',
+      user: { id, username, email, role },
+      token
     });
   } catch (error) {
+    console.error('Register error:', error);
     res.status(500).json({ error: error.message });
   }
 });
 
 // Login
-router.post('/login', (req, res) => {
-  const { username, password } = req.body;
+router.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
-  }
-
-  db.get('SELECT * FROM users WHERE username = ? OR email = ?', [username, username], async (err, user) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
     }
+
+    // Find user by email
+    const user = await db.get(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    );
 
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -95,7 +91,7 @@ router.post('/login', (req, res) => {
 
     // Update last login
     const last_login = new Date().toISOString();
-    db.run('UPDATE users SET last_login = ? WHERE id = ?', [last_login, user.id]);
+    await db.run('UPDATE users SET last_login = $1 WHERE id = $2', [last_login, user.id]);
 
     // Generate JWT token
     const token = jwt.sign(
@@ -115,73 +111,72 @@ router.post('/login', (req, res) => {
       },
       token
     });
-  });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Get current user profile
-router.get('/me', authenticateToken, (req, res) => {
-  db.get(
-    `SELECT id, username, email, role, employee_id, status, last_login, created_at 
-     FROM users WHERE id = ?`,
-    [req.user.id],
-    (err, user) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const user = await db.get(
+      `SELECT id, username, email, role, employee_id, status, last_login, created_at 
+       FROM users WHERE id = $1`,
+      [req.user.id]
+    );
 
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-
-      res.json(user);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  );
+
+    res.json(user);
+  } catch (error) {
+    console.error('Get user error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Change password
 router.post('/change-password', authenticateToken, async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+  try {
+    const { current_password, new_password } = req.body;
 
-  if (!currentPassword || !newPassword) {
-    return res.status(400).json({ error: 'Current and new passwords are required' });
-  }
+    if (!current_password || !new_password) {
+      return res.status(400).json({ error: 'Current and new passwords are required' });
+    }
 
-  if (newPassword.length < 6) {
-    return res.status(400).json({ error: 'New password must be at least 6 characters' });
-  }
+    if (new_password.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    }
 
-  db.get('SELECT password_hash FROM users WHERE id = ?', [req.user.id], async (err, user) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
+    // Get user
+    const user = await db.get('SELECT * FROM users WHERE id = $1', [req.user.id]);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
     // Verify current password
-    const validPassword = await bcrypt.compare(currentPassword, user.password_hash);
+    const validPassword = await bcrypt.compare(current_password, user.password_hash);
     if (!validPassword) {
       return res.status(401).json({ error: 'Current password is incorrect' });
     }
 
     // Hash new password
-    const salt = await bcrypt.genSalt(10);
-    const password_hash = await bcrypt.hash(newPassword, salt);
+    const new_password_hash = await bcrypt.hash(new_password, 10);
 
-    db.run('UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?',
-      [password_hash, new Date().toISOString(), req.user.id],
-      (err) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
-
-        res.json({ message: 'Password changed successfully' });
-      }
+    // Update password
+    await db.run(
+      'UPDATE users SET password_hash = $1, updated_at = $2 WHERE id = $3',
+      [new_password_hash, new Date().toISOString(), req.user.id]
     );
-  });
-});
 
-// Logout (client-side token removal, but we can log it)
-router.post('/logout', authenticateToken, (req, res) => {
-  // In a production system, you might want to blacklist the token
-  res.json({ message: 'Logged out successfully' });
+    res.json({ message: 'Password changed successfully' });
+  } catch (error) {
+    console.error('Change password error:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;
