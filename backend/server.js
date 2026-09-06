@@ -57,15 +57,9 @@ app.get('/', (req, res) => {
   });
 });
 
-// Middleware
+// Middleware - Allow all origins for now (will restrict later)
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://equipment-management-system.vercel.app',
-    'https://equipment-management-system-git-main-lmarlmarlmar46-ops.vercel.app',
-    'https://*.vercel.app'
-  ],
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
