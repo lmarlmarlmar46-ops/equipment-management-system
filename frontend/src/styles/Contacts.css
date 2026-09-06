@@ -1,0 +1,246 @@
+/* Contacts Page Styles */
+
+.contacts-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.contacts-page .page-header h1 {
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.contacts-page .page-header p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.contact-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border-color: var(--accent-gold);
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.contact-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a1a1a;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.contact-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-indicator.available {
+  background: #2ecc71;
+  box-shadow: 0 0 8px #2ecc71;
+}
+
+.status-indicator.unavailable {
+  background: #95a5a6;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.contact-body {
+  margin-bottom: 1.5rem;
+}
+
+.contact-body h3 {
+  color: #ffffff;
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+
+.contact-role {
+  color: var(--accent-gold);
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact-department {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(218, 165, 32, 0.15);
+  color: var(--accent-gold);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(218, 165, 32, 0.3);
+}
+
+.contact-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.contact-info svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.contact-info a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.contact-info a:hover {
+  color: var(--accent-gold);
+}
+
+.contact-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-contact {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(218, 165, 32, 0.1);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  color: var(--accent-gold);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-contact svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-contact:hover {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%);
+  color: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+}
+
+.help-section {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+}
+
+.help-section h2 {
+  color: #ffffff;
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.help-section > p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+}
+
+.help-section strong {
+  color: var(--accent-gold);
+}
+
+.help-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.help-card {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.help-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+.help-card h3 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.help-card p {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.help-link {
+  display: inline-block;
+  color: var(--accent-gold);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.help-link:hover {
+  text-decoration: underline;
+  transform: translateX(4px);
+}

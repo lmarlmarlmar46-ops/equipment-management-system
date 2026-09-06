@@ -3,17 +3,10 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const MainLayout = () => {
-  const [theme, setTheme] = useState('light');
   const [showKeyboardHints, setShowKeyboardHints] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, logout, isManager } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
-  }, []);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -47,10 +40,6 @@ const MainLayout = () => {
             e.preventDefault();
             navigate('/my-equipment');
             break;
-          case 'd':
-            e.preventDefault();
-            toggleTheme();
-            break;
           case 'k':
             e.preventDefault();
             setShowKeyboardHints(prev => !prev);
@@ -64,13 +53,6 @@ const MainLayout = () => {
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [navigate, isManager]);
-
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
-  };
 
   const handleLogout = () => {
     logout();
@@ -112,7 +94,13 @@ const MainLayout = () => {
                     <strong>{user?.username}</strong>
                     <small>{user?.email}</small>
                   </div>
-                  <button onClick={handleLogout} className="user-menu-item">
+                  <button onClick={(e) => { e.stopPropagation(); navigate('/profile'); setShowUserMenu(false); }} className="user-menu-item">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Profile Settings
+                  </button>
+                  <button onClick={(e) => { e.stopPropagation(); handleLogout(); }} className="user-menu-item">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
@@ -191,6 +179,12 @@ const MainLayout = () => {
           </svg>
           Request
         </NavLink>
+        <NavLink to="/contacts" className="nav-button ripple">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Contacts
+        </NavLink>
       </nav>
 
       <main className="app-main">
@@ -200,30 +194,6 @@ const MainLayout = () => {
       <footer className="app-footer">
         <p>© 2026 EquipTrack - IT Asset Management System</p>
       </footer>
-
-      <button 
-        className="theme-toggle ripple" 
-        onClick={toggleTheme}
-        title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode (Alt+D)`}
-      >
-        {theme === 'light' ? (
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        ) : (
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2"/>
-            <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        )}
-      </button>
 
       <button
         className="keyboard-hint-toggle"
@@ -273,10 +243,6 @@ const MainLayout = () => {
           <div className="shortcut-item">
             <span>My Equipment</span>
             <kbd>Alt + 6</kbd>
-          </div>
-          <div className="shortcut-item">
-            <span>Toggle Theme</span>
-            <kbd>Alt + D</kbd>
           </div>
           <div className="shortcut-item">
             <span>Toggle This Help</span>

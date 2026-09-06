@@ -21,6 +21,8 @@ import MyEquipment from './pages/MyEquipment';
 import RequestEquipment from './pages/RequestEquipment';
 import MyRequests from './pages/MyRequests';
 import UserManagement from './pages/UserManagement';
+import ProfileSettings from './pages/ProfileSettings';
+import Contacts from './pages/Contacts';
 
 import './App.css';
 
@@ -93,6 +95,24 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MyRequests />
+                </ProtectedRoute>
+              }
+            />
+            
+            {/* Profile and Contacts */}
+            <Route
+              path="profile"
+              element={
+                <ProtectedRoute>
+                  <ProfileSettings />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="contacts"
+              element={
+                <ProtectedRoute>
+                  <Contacts />
                 </ProtectedRoute>
               }
             />

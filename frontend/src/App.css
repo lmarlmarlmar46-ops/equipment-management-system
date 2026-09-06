@@ -2394,3 +2394,67 @@ html {
   border: 1px solid var(--border-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+
+/* ========================================
+   FORCE LIGHT MODE - WHITE TEXT FIX
+   ======================================== */
+
+:root {
+  --text-primary: #ffffff !important;
+  --text-secondary: rgba(255, 255, 255, 0.7) !important;
+  --bg-primary: #1a1a1a !important;
+  --card-bg: #2d1414 !important;
+  --border-color: rgba(218, 165, 32, 0.2) !important;
+  --accent-gold: #DAA520 !important;
+}
+
+/* Remove dark mode toggle */
+.theme-toggle {
+  display: none !important;
+}
+
+/* Ensure all text is white */
+body,
+html,
+.app,
+.app-header,
+.app-nav,
+.app-main,
+h1, h2, h3, h4, h5, h6,
+p, span, div, label, button {
+  color: #ffffff !important;
+}
+
+.logo-section h1 {
+  color: #ffffff !important;
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.user-name,
+.user-role {
+  color: #ffffff !important;
+}
+
+.nav-button {
+  color: #ffffff !important;
+}
+
+.nav-button.active {
+  color: var(--accent-gold) !important;
+}
+
+/* Navigation button text visibility */
+.nav-button span,
+.nav-button svg {
+  color: inherit;
+}
+
+/* Page header text */
+.page-header h1,
+.page-header p {
+  color: #ffffff !important;
+}
