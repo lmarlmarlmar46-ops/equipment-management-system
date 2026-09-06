@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Equipment Management System",
   "scripts": {
-    "build": "cd frontend && npm install && npm run build && cd .. && cp -r frontend/dist dist",
-    "vercel-build": "cd frontend && npm install && npm run build && cd .. && cp -r frontend/dist dist"
+    "build": "cd frontend && npm install && npm run build && cd .. && xcopy /E /I /Y frontend\\dist dist",
+    "vercel-build": "cd frontend && npm install && npm run build && cd .. && mv frontend/dist dist || cp -r frontend/dist dist"
   }
 }
