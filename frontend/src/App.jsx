@@ -20,6 +20,7 @@ import ITDashboard from './pages/ITDashboard';
 import MyEquipment from './pages/MyEquipment';
 import RequestEquipment from './pages/RequestEquipment';
 import MyRequests from './pages/MyRequests';
+import UserManagement from './pages/UserManagement';
 
 import './App.css';
 
@@ -56,6 +57,16 @@ function App() {
               element={
                 <ProtectedRoute requiredRole={['admin', 'manager']}>
                   <ITDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* User Management (Admin & Manager only) */}
+            <Route
+              path="users"
+              element={
+                <ProtectedRoute requiredRole={['admin', 'manager']}>
+                  <UserManagement />
                 </ProtectedRoute>
               }
             />

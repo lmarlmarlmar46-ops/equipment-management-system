@@ -44,6 +44,9 @@ const Register = () => {
 
     const { confirmPassword, ...registerData } = formData;
     
+    // Remove role from registration data (backend will set it to 'employee')
+    delete registerData.role;
+    
     // Convert empty employee_id to null
     if (!registerData.employee_id) {
       registerData.employee_id = null;
@@ -153,20 +156,16 @@ const Register = () => {
 
           <div className="form-group">
             <label htmlFor="role">Role</label>
-            <select
+            <input
+              type="text"
               id="role"
               name="role"
-              value={formData.role}
-              onChange={handleChange}
-              required
-              disabled={loading}
-            >
-              <option value="employee">Employee</option>
-              <option value="manager">Manager</option>
-              <option value="admin">Admin</option>
-            </select>
+              value="Employee"
+              disabled
+              style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)', cursor: 'not-allowed' }}
+            />
             <small className="form-hint">
-              Select your role in the organization
+              All new accounts are created as Employee. Admins can promote you later.
             </small>
           </div>
 

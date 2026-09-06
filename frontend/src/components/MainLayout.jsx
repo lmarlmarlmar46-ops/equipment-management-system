@@ -135,9 +135,14 @@ const MainLayout = () => {
         </NavLink>
         
         {isManager() && (
-          <NavLink to="/it-dashboard" className="nav-button ripple nav-button-highlight">
-            🔧 IT Operations
-          </NavLink>
+          <>
+            <NavLink to="/it-dashboard" className="nav-button ripple nav-button-highlight">
+              🔧 IT Operations
+            </NavLink>
+            <NavLink to="/users" className="nav-button ripple nav-button-highlight">
+              👥 Users
+            </NavLink>
+          </>
         )}
         
         <NavLink to="/my-equipment" className="nav-button ripple">

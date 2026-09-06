@@ -9,7 +9,10 @@ const { JWT_SECRET, authenticateToken } = require('../middleware/auth');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password, role = 'employee', employee_id } = req.body;
+    const { username, email, password, employee_id } = req.body;
+    
+    // Force role to 'employee' for all registrations
+    const role = 'employee';
 
     // Validation
     if (!username || !email || !password) {
@@ -50,7 +53,7 @@ router.post('/register', async (req, res) => {
     );
 
     res.status(201).json({
-      message: 'User registered successfully',
+      message: 'User registered successfully as employee',
       user: { id, username, email, role },
       token
     });
@@ -180,3 +183,93 @@ router.post('/change-password', authenticateToken, async (req, res) => {
 });
 
 module.exports = router;
+
+
+// Promote user (Admin/Manager only)
+router.post('/promote', authenticateToken, async (req, res) => {
+  try {
+    // Check if requester is admin or manager
+    if (req.user.role !== 'admin' && req.user.role !== 'manager') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only admins and managers can promote users.' 
+      });
+    }
+
+    const { user_id, new_role } = req.body;
+
+    if (!user_id || !new_role) {
+      return res.status(400).json({ error: 'User ID and new role are required' });
+    }
+
+    // Validate new role
+    const validRoles = ['employee', 'manager', 'admin'];
+    if (!validRoles.includes(new_role)) {
+      return res.status(400).json({ error: 'Invalid role. Must be: employee, manager, or admin' });
+    }
+
+    // Managers cannot promote to admin (only admins can)
+    if (req.user.role === 'manager' && new_role === 'admin') {
+      return res.status(403).json({ 
+        error: 'Only admins can promote users to admin role' 
+      });
+    }
+
+    // Get target user
+    const targetUser = await db.get('SELECT id, username, email, role FROM users WHERE id = $1', [user_id]);
+
+    if (!targetUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update user role
+    await db.run(
+      'UPDATE users SET role = $1, updated_at = $2 WHERE id = $3',
+      [new_role, new Date().toISOString(), user_id]
+    );
+
+    res.json({
+      message: `User promoted successfully`,
+      user: {
+        id: targetUser.id,
+        username: targetUser.username,
+        email: targetUser.email,
+        old_role: targetUser.role,
+        new_role: new_role
+      },
+      promoted_by: {
+        id: req.user.id,
+        username: req.user.username,
+        role: req.user.role
+      }
+    });
+  } catch (error) {
+    console.error('Promote error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get all users (Admin/Manager only) - for managing promotions
+router.get('/users', authenticateToken, async (req, res) => {
+  try {
+    // Check if requester is admin or manager
+    if (req.user.role !== 'admin' && req.user.role !== 'manager') {
+      return res.status(403).json({ 
+        error: 'Access denied. Only admins and managers can view all users.' 
+      });
+    }
+
+    const users = await db.query(
+      `SELECT id, username, email, role, status, employee_id, created_at, last_login 
+       FROM users 
+       ORDER BY created_at DESC`
+    );
+
+    res.json({
+      users: users.rows,
+      total: users.rows.length
+    });
+  } catch (error) {
+    console.error('Get users error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
