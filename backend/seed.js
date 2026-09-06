@@ -10,8 +10,8 @@ async function seedDatabase() {
     await db.initializeDatabase();
 
     // Check if data already exists
-    const existingUsers = await db.all('SELECT COUNT(*) as count FROM users');
-    if (existingUsers[0].count > 0) {
+    const result = await db.query('SELECT COUNT(*) as count FROM users');
+    if (result.rows && result.rows[0] && parseInt(result.rows[0].count) > 0) {
       console.log('⚠️  Database already contains data. Skipping seed.');
       console.log('   To reseed, manually clear the database first.');
       process.exit(0);
