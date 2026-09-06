@@ -1,277 +1,306 @@
-# EquipTrack - Enhanced Remote Employee Equipment Allocation & Asset Tracking System
+# 🎯 EquipTrack - Remote Employee Equipment Allocation & Asset Tracking System
 
-## Overview
-EquipTrack is a comprehensive system for managing equipment allocation, tracking, maintenance, and lifecycle management for remote and on-site employees.
+A comprehensive web-based system for managing equipment allocation to remote employees, tracking assets, and monitoring equipment lifecycle.
 
-## Key Features
+## 📋 Features
 
-### Core Modules
-1. **Authentication & Access Management**
-   - Multi-factor authentication (MFA)
-   - SSO integration support
-   - Role-based access control (RBAC)
-   - Session management with auto-logout
+### 🏠 Dashboard
+- Real-time statistics overview
+- Total, available, and allocated equipment counts
+- Active employee and allocation metrics
+- Equipment distribution by category
 
-2. **Equipment Request Management**
-   - Single and bulk equipment requests
-   - Request templates for common scenarios
-   - Draft saving capability
-   - Alternative equipment suggestions
-   - Real-time inventory availability
+### 💻 Equipment Management
+- Add, edit, and delete equipment items
+- Track equipment details (brand, model, serial number)
+- Monitor equipment status (available, allocated, maintenance, retired)
+- Condition tracking (excellent, good, fair, poor)
+- Purchase information and pricing
 
-3. **Approval Workflow**
-   - Multi-level approval routing
-   - Approval delegation
-   - Escalation mechanisms
-   - Partial approvals
-   - Comment and conditional approval support
+### 👥 Employee Management
+- Manage employee records
+- Department and location tracking
+- Employee status management (active/inactive)
+- View equipment allocation history per employee
 
-4. **Equipment Allocation & Assignment**
-   - QR code/Barcode generation
-   - Digital acceptance and signatures
-   - Accessory tracking
-   - Warranty management
-   - Pre-allocation quality checks
+### 🔄 Allocation System
+- Allocate equipment to employees
+- Track allocation dates and expected returns
+- Process equipment returns
+- View allocation history
+- Automatic equipment status updates
 
-5. **Equipment Return Processing**
-   - Scheduled returns
-   - Condition assessment with photo documentation
-   - Partial return support
-   - Return checklist automation
-   - Exit interview integration
-
-6. **Maintenance Management**
-   - Preventive and reactive maintenance
-   - Maintenance history tracking
-   - SLA monitoring
-   - Repair vs. replace decision logic
-   - External vendor management
-   - Cost tracking per maintenance event
-
-7. **Asset Lifecycle Management**
-   - Complete asset history
-   - Depreciation tracking
-   - Warranty tracking
-   - Decommissioning workflow
-   - Physical audit support
-
-8. **Inventory Management**
-   - Real-time stock levels
-   - Low stock alerts
-   - Reorder point management
-   - Multi-location inventory
-   - Vendor/supplier management
-
-9. **Transfer & Reservation**
-   - Employee-to-employee transfers
-   - Location transfers
-   - Equipment reservation system
-   - Waiting list management
-
-10. **Reporting & Analytics**
-    - Asset utilization reports
-    - Equipment lifecycle cost analysis
-    - Maintenance cost trends
-    - Compliance and audit reports
-    - Custom dashboard with KPIs
-    - Data export (Excel, PDF, CSV)
-
-11. **Notification System**
-    - Multi-channel notifications (Email, SMS, In-app, Push)
-    - Configurable preferences
-    - Digest and real-time options
-    - Automated reminders and alerts
-
-12. **Mobile Application**
-    - QR code scanning
-    - Photo capture for condition documentation
-    - GPS location capture
-    - Offline mode support
-    - Push notifications
-
-## System Roles
-
-1. **Employee** - Request, view, and return equipment
-2. **IT Admin** - Approve requests, allocate equipment, manage inventory
-3. **Maintenance Team** - Handle repairs and maintenance
-4. **Manager** - View team equipment, approve high-value requests
-5. **Auditor** - Read-only access to audit trails and reports
-6. **System Administrator** - Configure system, manage users and permissions
-
-## Technology Stack (Recommended)
+## 🛠️ Technology Stack
 
 ### Backend
-- **Language**: Node.js (TypeScript) or Python (FastAPI/Django)
-- **Database**: PostgreSQL (primary), Redis (caching)
-- **API**: RESTful API + GraphQL (optional)
-- **Authentication**: JWT + OAuth 2.0 / SAML for SSO
-- **File Storage**: AWS S3 / Azure Blob Storage (for photos, documents)
+- **Node.js** with Express.js
+- **SQLite** database
+- RESTful API architecture
+- UUID for unique identifiers
 
 ### Frontend
-- **Web**: React.js / Next.js with TypeScript
-- **Mobile**: React Native or Flutter
-- **UI Framework**: Material-UI / Ant Design / Tailwind CSS
-- **State Management**: Redux Toolkit / Zustand
-- **Forms**: React Hook Form + Zod validation
+- **React 18** with hooks
+- **Vite** for fast development
+- Modern CSS with CSS variables
+- Responsive design
 
-### Infrastructure
-- **Container**: Docker + Kubernetes
-- **CI/CD**: GitHub Actions / GitLab CI
-- **Monitoring**: Datadog / New Relic / Prometheus + Grafana
-- **Logging**: ELK Stack (Elasticsearch, Logstash, Kibana)
+## 📁 Project Structure
 
-### Integrations
-- **Email**: SendGrid / AWS SES
-- **SMS**: Twilio / AWS SNS
-- **QR Code**: qrcode library
-- **PDF Generation**: Puppeteer / PDFKit
-- **HR System**: API integration (Workday, BambooHR, etc.)
-- **Finance**: QuickBooks, SAP integration
+```
+EquipTrack/
+├── backend/
+│   ├── models/
+│   │   ├── Employee.js
+│   │   ├── Equipment.js
+│   │   └── Allocation.js
+│   ├── routes/
+│   │   ├── employees.js
+│   │   ├── equipment.js
+│   │   ├── allocations.js
+│   │   └── dashboard.js
+│   ├── database.js
+│   ├── server.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── Equipment.jsx
+│   │   │   ├── Employees.jsx
+│   │   │   └── Allocations.jsx
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+└── README.md
+```
 
-## Implementation Phases
+## 🚀 Getting Started
 
-### Phase 1 - MVP (Core Functionality)
+### Prerequisites
+
+- **Node.js** (v16 or higher)
+- **npm** (v8 or higher)
+
+### Installation
+
+1. **Clone or navigate to the project directory**
+   ```bash
+   cd EquipTrack
+   ```
+
+2. **Install Backend Dependencies**
+   ```bash
+   cd backend
+   npm install
+   ```
+
+3. **Install Frontend Dependencies**
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+### Running the Application
+
+You need to run both backend and frontend servers:
+
+#### Terminal 1: Start Backend Server
+```bash
+cd backend
+npm start
+```
+The backend API will run on `http://localhost:5000`
+
+#### Terminal 2: Start Frontend Development Server
+```bash
+cd frontend
+npm run dev
+```
+The frontend will run on `http://localhost:3000`
+
+### First Time Setup
+
+When you first run the application:
+1. The SQLite database will be automatically created
+2. Database tables will be initialized
+3. Open your browser to `http://localhost:3000`
+4. Start by adding employees and equipment
+5. Create allocations to track equipment distribution
+
+## 📚 API Endpoints
+
+### Employees
+- `GET /api/employees` - Get all employees
+- `GET /api/employees/:id` - Get employee by ID
+- `GET /api/employees/:id/allocations` - Get employee's allocations
+- `POST /api/employees` - Create new employee
+- `PUT /api/employees/:id` - Update employee
+- `DELETE /api/employees/:id` - Delete employee
+
+### Equipment
+- `GET /api/equipment` - Get all equipment
+- `GET /api/equipment/:id` - Get equipment by ID
+- `GET /api/equipment/available` - Get available equipment
+- `POST /api/equipment` - Create new equipment
+- `PUT /api/equipment/:id` - Update equipment
+- `DELETE /api/equipment/:id` - Delete equipment
+
+### Allocations
+- `GET /api/allocations` - Get all allocations
+- `GET /api/allocations/active` - Get active allocations
+- `GET /api/allocations/:id` - Get allocation by ID
+- `GET /api/allocations/employee/:employee_id` - Get allocations by employee
+- `GET /api/allocations/equipment/:equipment_id` - Get allocations by equipment
+- `POST /api/allocations` - Create new allocation
+- `POST /api/allocations/:id/return` - Return equipment
+
+### Dashboard
+- `GET /api/dashboard/stats` - Get dashboard statistics
+
+### Health Check
+- `GET /api/health` - API health check
+
+## 💾 Database Schema
+
+### Employees Table
+- `id` - Unique identifier
+- `name` - Employee full name
+- `email` - Employee email (unique)
+- `department` - Department name
+- `location` - Work location
+- `status` - Employee status (active/inactive)
+- `created_at` - Timestamp
+
+### Equipment Table
+- `id` - Unique identifier
+- `name` - Equipment name
+- `category` - Equipment category
+- `brand` - Manufacturer brand
+- `model` - Model number
+- `serial_number` - Unique serial number
+- `purchase_date` - Purchase date
+- `purchase_price` - Purchase price
+- `status` - Status (available/allocated/maintenance/retired)
+- `condition` - Condition (excellent/good/fair/poor)
+- `notes` - Additional notes
+- `created_at` - Timestamp
+
+### Allocations Table
+- `id` - Unique identifier
+- `equipment_id` - Foreign key to equipment
+- `employee_id` - Foreign key to employee
+- `allocated_date` - Allocation date
+- `expected_return_date` - Expected return date
+- `actual_return_date` - Actual return date
+- `status` - Allocation status (active/returned)
+- `notes` - Additional notes
+- `created_at` - Timestamp
+
+### Maintenance Logs Table
+- `id` - Unique identifier
+- `equipment_id` - Foreign key to equipment
+- `maintenance_type` - Type of maintenance
+- `description` - Maintenance description
+- `cost` - Maintenance cost
+- `performed_date` - Date performed
+- `performed_by` - Person who performed maintenance
+- `created_at` - Timestamp
+
+## 🎨 Features in Detail
+
+### Equipment Status Management
+- **Available**: Ready for allocation
+- **Allocated**: Currently assigned to an employee
+- **Maintenance**: Under maintenance or repair
+- **Retired**: No longer in service
+
+### Allocation Workflow
+1. Select an available employee
+2. Choose available equipment
+3. Set allocation date and expected return date
+4. Add notes if needed
+5. System automatically updates equipment status to "allocated"
+6. When returned, equipment status reverts to "available"
+
+### Dashboard Metrics
+- **Total Equipment**: All equipment in the system
+- **Available Equipment**: Equipment ready for allocation
+- **Allocated Equipment**: Currently assigned equipment
+- **Active Employees**: Employees with active status
+- **Active Allocations**: Current equipment allocations
+- **Equipment by Category**: Visual breakdown of equipment types
+
+## 🔧 Configuration
+
+### Backend Configuration
+Edit `backend/server.js` to change:
+- Server port (default: 5000)
+- CORS settings
+- Database path
+
+### Frontend Configuration
+Edit `frontend/vite.config.js` to change:
+- Development server port (default: 3000)
+- API proxy settings
+
+## 🎯 Usage Tips
+
+1. **Adding Equipment First**: Start by adding equipment items before creating allocations
+2. **Employee Management**: Ensure employees are set to "active" status for allocations
+3. **Serial Numbers**: Use unique serial numbers for better equipment tracking
+4. **Categories**: Use consistent category names for better dashboard reporting
+5. **Regular Returns**: Process equipment returns promptly to keep inventory accurate
+
+## 🐛 Troubleshooting
+
+### Backend won't start
+- Ensure Node.js is installed: `node --version`
+- Check if port 5000 is available
+- Verify all dependencies are installed: `npm install`
+
+### Frontend won't start
+- Ensure Node.js is installed
+- Check if port 3000 is available
+- Verify all dependencies are installed: `npm install`
+- Clear browser cache if seeing old data
+
+### Database errors
+- Delete `backend/equiptrack.db` and restart the server to recreate the database
+- Check file permissions in the backend directory
+
+### API connection issues
+- Verify backend server is running
+- Check proxy configuration in `frontend/vite.config.js`
+- Ensure no firewall is blocking local connections
+
+## 📈 Future Enhancements
+
 - User authentication and authorization
-- Basic equipment request workflow
-- Approval process (single level)
-- Equipment allocation and assignment
-- Basic return process
-- Simple inventory tracking
-- Email notifications
-- Basic reporting
+- Email notifications for overdue returns
+- Equipment depreciation tracking
+- Advanced reporting and analytics
+- CSV/Excel export functionality
+- Barcode/QR code generation for equipment
+- Mobile app for quick equipment scanning
+- Integration with procurement systems
+- Multi-tenant support for multiple organizations
 
-**Estimated Timeline**: 8-10 weeks
+## 📝 License
 
-### Phase 2 - Enhanced Features
-- Maintenance management module
-- Advanced approval workflows (delegation, escalation)
-- QR code generation and scanning
-- Bulk operations
-- Photo documentation
-- Enhanced notifications (SMS, in-app)
-- Dashboard and analytics
-- Equipment transfer functionality
+MIT License - Feel free to use this system for your organization.
 
-**Estimated Timeline**: 6-8 weeks
+## 🤝 Contributing
 
-### Phase 3 - Advanced Capabilities
-- Mobile application (iOS/Android)
-- Advanced analytics and reporting
-- Reservation and waiting list
-- Preventive maintenance scheduling
-- System integrations (HR, Finance)
-- Audit trail and compliance features
-- Multi-location support
-- Equipment comparison and recommendations
+Contributions are welcome! Feel free to submit issues or pull requests.
 
-**Estimated Timeline**: 8-10 weeks
+## 📧 Support
 
-### Phase 4 - Optimization & Scaling
-- Performance optimization
-- Advanced search and filtering
-- AI-powered insights (cost optimization, predictive maintenance)
-- Advanced security features
-- Multi-tenant support
-- API for third-party integrations
+For support and questions, please open an issue in the project repository.
 
-**Estimated Timeline**: 4-6 weeks
+---
 
-## Project Structure
-```
-equiptrack/
-├── docs/                       # Documentation
-│   ├── architecture/          # Architecture diagrams
-│   ├── api/                   # API documentation
-│   ├── user-guides/           # User manuals
-│   └── workflows/             # Process flowcharts
-├── backend/                    # Backend application
-│   ├── src/
-│   │   ├── modules/           # Feature modules
-│   │   │   ├── auth/
-│   │   │   ├── equipment/
-│   │   │   ├── requests/
-│   │   │   ├── approvals/
-│   │   │   ├── inventory/
-│   │   │   ├── maintenance/
-│   │   │   ├── notifications/
-│   │   │   └── reports/
-│   │   ├── common/            # Shared utilities
-│   │   ├── config/            # Configuration
-│   │   └── database/          # Database schemas
-│   ├── tests/                 # Test files
-│   └── package.json
-├── frontend/                   # Web application
-│   ├── src/
-│   │   ├── components/        # Reusable components
-│   │   ├── pages/             # Page components
-│   │   ├── hooks/             # Custom hooks
-│   │   ├── services/          # API services
-│   │   ├── store/             # State management
-│   │   └── utils/             # Utilities
-│   └── package.json
-├── mobile/                     # Mobile application
-│   ├── ios/
-│   ├── android/
-│   └── src/
-├── infrastructure/             # DevOps and infrastructure
-│   ├── docker/
-│   ├── kubernetes/
-│   └── terraform/
-└── scripts/                    # Utility scripts
-```
-
-## Getting Started
-
-### Quick Deploy to Railway
-
-1. **Read the deployment guide:**
-   - **START.md** - Simplest guide (recommended!)
-   - **CHECKLIST.md** - Step-by-step checklist
-   - **DEPLOY_TO_RAILWAY.md** - Detailed instructions
-
-2. **Push to GitHub:**
-   ```cmd
-   cd C:\Users\holog\OneDrive\Desktop\EquipTrack
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin https://github.com/YOUR_USERNAME/equiptrack.git
-   git push -u origin main
-   ```
-
-3. **Deploy on Railway:**
-   - Follow START.md for step-by-step instructions
-   - Railway will host your database, backend, and frontend
-   - No Docker or local servers needed!
-
-4. **Make updates:**
-   ```cmd
-   push-to-github.bat "Your update description"
-   ```
-   Railway auto-deploys your changes!
-
-## Security Considerations
-
-1. **Data Encryption**: All sensitive data encrypted at rest and in transit
-2. **Access Control**: Role-based permissions with principle of least privilege
-3. **Audit Logging**: Complete audit trail of all actions
-4. **Data Privacy**: GDPR compliant data handling
-5. **Security Headers**: Implementation of security best practices
-6. **Input Validation**: All inputs validated and sanitized
-7. **Rate Limiting**: API rate limiting to prevent abuse
-8. **Backup & Recovery**: Regular automated backups with disaster recovery plan
-
-## Compliance & Standards
-
-- GDPR (General Data Protection Regulation)
-- ISO 27001 (Information Security Management)
-- SOC 2 Type II (if handling sensitive data)
-- Asset management best practices (ISO 55000)
-
-## License
-
-[To be determined]
-
-## Contributors
-
-[To be added]
+Built with ❤️ for remote teams managing equipment allocation
