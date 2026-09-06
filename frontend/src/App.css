@@ -2485,27 +2485,31 @@ p, span, div, label, button {
 .nav-button.active {
   background: rgba(218, 165, 32, 0.25) !important;
   border-color: var(--accent-gold) !important;
-  color: var(--accent-gold) !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
 }
 
 .nav-button svg {
-  color: currentColor !important;
+  color: #ffffff !important;
   opacity: 0.9;
 }
 
 .nav-button.active svg {
-  color: var(--accent-gold) !important;
+  color: #ffffff !important;
   opacity: 1;
 }
 
-/* Secondary button (Request) styling */
+/* Secondary button (Request) styling - FIXED */
 .nav-button-secondary {
   background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%) !important;
   border: none !important;
-  color: #1a1a1a !important;
-  font-weight: 600 !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
   box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3) !important;
+}
+
+.nav-button-secondary * {
+  color: #000000 !important;
 }
 
 .nav-button-secondary:hover {
@@ -2516,25 +2520,35 @@ p, span, div, label, button {
 }
 
 .nav-button-secondary svg {
-  color: #1a1a1a !important;
+  color: #000000 !important;
+  stroke: #000000 !important;
 }
 
-/* Highlight buttons (IT Operations, Users) */
+/* Highlight buttons (IT Operations, Users) - FIXED */
 .nav-button-highlight {
   background: rgba(218, 165, 32, 0.15) !important;
   border: 1px solid var(--accent-gold) !important;
-  color: var(--accent-gold) !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
+}
+
+.nav-button-highlight * {
+  color: #ffffff !important;
 }
 
 .nav-button-highlight:hover {
   background: rgba(218, 165, 32, 0.25) !important;
   border-color: var(--accent-gold) !important;
-  color: var(--accent-gold) !important;
+  color: #ffffff !important;
 }
 
 .nav-button-highlight svg {
-  color: var(--accent-gold) !important;
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.nav-button-highlight.active {
+  color: #ffffff !important;
 }
 
 /* Ensure navigation bar has proper background */
@@ -2642,4 +2656,50 @@ a:hover {
 /* Ensure all children inherit proper colors */
 * {
   color: inherit;
+}
+
+
+/* ========================================
+   USER AVATAR FIXES
+   ======================================== */
+
+/* Fix user avatar in header - remove yellow background */
+.user-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 2px solid rgba(218, 165, 32, 0.5) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+.user-avatar:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: var(--accent-gold) !important;
+}
+
+/* Profile page avatar - keep gold */
+.profile-avatar-large {
+  width: 100px !important;
+  height: 100px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #1a1a1a !important;
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Contact page avatars - keep gold */
+.contact-avatar {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, #d4af37 100%) !important;
+  color: #1a1a1a !important;
 }
