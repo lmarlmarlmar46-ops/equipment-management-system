@@ -15,6 +15,8 @@ const reservationsRouter = require('./routes/reservations');
 const serviceRequestsRouter = require('./routes/service-requests');
 const reportsRouter = require('./routes/reports');
 const notificationsRouter = require('./routes/notifications');
+const depreciationRouter = require('./routes/depreciation');
+const bulkRouter = require('./routes/bulk');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,7 +39,9 @@ app.get('/', (req, res) => {
       reservations: '/api/reservations',
       serviceRequests: '/api/service-requests',
       reports: '/api/reports',
-      notifications: '/api/notifications'
+      notifications: '/api/notifications',
+      depreciation: '/api/depreciation',
+      bulk: '/api/bulk (import/export)'
     }
   });
 });
@@ -65,6 +69,8 @@ app.use('/api/reservations', reservationsRouter);
 app.use('/api/service-requests', serviceRequestsRouter);
 app.use('/api/reports', reportsRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/depreciation', depreciationRouter);
+app.use('/api/bulk', bulkRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
