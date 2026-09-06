@@ -17,6 +17,7 @@ const reportsRouter = require('./routes/reports');
 const notificationsRouter = require('./routes/notifications');
 const depreciationRouter = require('./routes/depreciation');
 const bulkRouter = require('./routes/bulk');
+const workflowRouter = require('./routes/workflow');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -41,7 +42,8 @@ app.get('/', (req, res) => {
       reports: '/api/reports',
       notifications: '/api/notifications',
       depreciation: '/api/depreciation',
-      bulk: '/api/bulk (import/export)'
+      bulk: '/api/bulk (import/export)',
+      workflow: '/api/workflow (IT operations workflow)'
     }
   });
 });
@@ -71,6 +73,7 @@ app.use('/api/reports', reportsRouter);
 app.use('/api/notifications', notificationsRouter);
 app.use('/api/depreciation', depreciationRouter);
 app.use('/api/bulk', bulkRouter);
+app.use('/api/workflow', workflowRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
