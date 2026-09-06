@@ -1,0 +1,8 @@
+backend
+api
+node_modules
+.git
+*.md
+railway.toml
+nixpacks.toml
+Procfile
