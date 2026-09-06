@@ -12,6 +12,21 @@ const dashboardRouter = require('./routes/dashboard');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Railway health check
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'EquipTrack API is running',
+    endpoints: {
+      health: '/api/health',
+      dashboard: '/api/dashboard/stats',
+      employees: '/api/employees',
+      equipment: '/api/equipment',
+      allocations: '/api/allocations'
+    }
+  });
+});
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
