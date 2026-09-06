@@ -19,6 +19,7 @@ const depreciationRouter = require('./routes/depreciation');
 const bulkRouter = require('./routes/bulk');
 const workflowRouter = require('./routes/workflow');
 const seedRouter = require('./routes/seed');
+const testAuthRouter = require('./routes/test-auth');
 
 // Initialize database
 const db = require('./database-pg');
@@ -83,6 +84,7 @@ app.use('/api/depreciation', depreciationRouter);
 app.use('/api/bulk', bulkRouter);
 app.use('/api/workflow', workflowRouter);
 app.use('/api/seed', seedRouter);
+app.use('/api/test', testAuthRouter);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
