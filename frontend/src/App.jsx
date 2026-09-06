@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import Dashboard from './components/Dashboard';
 import Equipment from './components/Equipment';
 import Employees from './components/Employees';
@@ -145,6 +146,9 @@ function App() {
           </div>
         ))}
       </div>
+      
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </div>
   );
 }
