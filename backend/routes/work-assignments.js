@@ -136,6 +136,30 @@ router.post('/', authenticateToken, requireRole(['admin', 'manager']), async (re
       ]
     );
 
+    // Create notification for the assigned employee
+    const assignmentId = result.rows[0].id;
+    const managerName = req.user.username || 'Manager';
+    
+    await db.query(
+      `INSERT INTO notifications (
+        id,
+        user_id,
+        type,
+        title,
+        message,
+        action_url,
+        is_read
+      ) VALUES (gen_random_uuid()::text, $1, $2, $3, $4, $5, $6)`,
+      [
+        assigned_to,
+        'work_assignment',
+        'New Work Assignment',
+        `${managerName} assigned you a new task: ${task_description.substring(0, 50)}${task_description.length > 50 ? '...' : ''}`,
+        `/work-assignments`,
+        false
+      ]
+    );
+
     res.status(201).json({
       assignment: result.rows[0],
       employee: employeeCheck.rows[0]
@@ -182,6 +206,41 @@ router.patch('/:id/status', authenticateToken, async (req, res) => {
        RETURNING *`,
       [status, rejection_reason || null, assignmentId]
     );
+
+    // Create notification for the manager when employee responds
+    if (['accepted', 'rejected', 'completed'].includes(status)) {
+      const assignment = current.rows[0];
+      const employeeName = req.user.username || 'Employee';
+      
+      let notificationMessage = '';
+      if (status === 'accepted') {
+        notificationMessage = `${employeeName} accepted the work assignment`;
+      } else if (status === 'rejected') {
+        notificationMessage = `${employeeName} rejected the work assignment${rejection_reason ? ': ' + rejection_reason : ''}`;
+      } else if (status === 'completed') {
+        notificationMessage = `${employeeName} completed the work assignment`;
+      }
+
+      await db.query(
+        `INSERT INTO notifications (
+          id,
+          user_id,
+          type,
+          title,
+          message,
+          action_url,
+          is_read
+        ) VALUES (gen_random_uuid()::text, $1, $2, $3, $4, $5, $6)`,
+        [
+          assignment.assigned_by,
+          'work_assignment_update',
+          'Work Assignment Update',
+          notificationMessage,
+          `/work-assignments`,
+          false
+        ]
+      );
+    }
 
     res.json(result.rows[0]);
   } catch (error) {
