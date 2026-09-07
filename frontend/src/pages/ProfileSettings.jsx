@@ -64,147 +64,215 @@ const ProfileSettings = () => {
 
   return (
     <div className="profile-settings">
-      <div className="profile-header">
-        <div className="profile-avatar-large">
-          {user?.username?.charAt(0).toUpperCase() || 'U'}
-        </div>
-        <div className="profile-info">
-          <h1>{user?.username}</h1>
-          <p className="profile-email">{user?.email}</p>
-          <span className="profile-role-badge">{user?.role}</span>
+      <div className="card" style={{ marginBottom: 'var(--space-6)' }}>
+        <div className="card-body" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-6)' }}>
+          <div style={{ 
+            width: '80px', 
+            height: '80px', 
+            borderRadius: '50%', 
+            background: 'var(--brand-primary)', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            fontSize: 'var(--text-3xl)',
+            fontWeight: '700',
+            color: 'white',
+            flexShrink: 0
+          }}>
+            {user?.username?.charAt(0).toUpperCase() || 'U'}
+          </div>
+          <div style={{ flex: 1 }}>
+            <h1 className="heading-2" style={{ marginBottom: 'var(--space-1)' }}>{user?.username}</h1>
+            <p className="body-base" style={{ color: 'var(--text-secondary)', marginBottom: 'var(--space-2)' }}>{user?.email}</p>
+            <span className={`badge ${
+              user?.role === 'admin' ? 'badge-error' :
+              user?.role === 'manager' ? 'badge-warning' :
+              'badge-info'
+            }`}>
+              {user?.role}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div className="profile-sections">
-        <div className="profile-section">
-          <h2>Account Information</h2>
-          <div className="info-grid">
-            <div className="info-item">
-              <span className="info-label">Username</span>
-              <span className="info-value">{user?.username}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Email</span>
-              <span className="info-value">{user?.email}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Role</span>
-              <span className="info-value role-badge">{user?.role}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Employee ID</span>
-              <span className="info-value">{user?.employee_id || 'N/A'}</span>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)' }}>
+        <div className="card">
+          <div className="card-header">
+            <h3 className="card-header-title">Account Information</h3>
+          </div>
+          <div className="card-body">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+                <span className="caption" style={{ color: 'var(--text-tertiary)' }}>Username</span>
+                <span className="body-sm" style={{ fontWeight: '500' }}>{user?.username}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+                <span className="caption" style={{ color: 'var(--text-tertiary)' }}>Email</span>
+                <span className="body-sm" style={{ fontWeight: '500' }}>{user?.email}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+                <span className="caption" style={{ color: 'var(--text-tertiary)' }}>Role</span>
+                <span className={`badge ${
+                  user?.role === 'admin' ? 'badge-error' :
+                  user?.role === 'manager' ? 'badge-warning' :
+                  'badge-info'
+                }`}>
+                  {user?.role}
+                </span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 'var(--space-3)', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+                <span className="caption" style={{ color: 'var(--text-tertiary)' }}>Employee ID</span>
+                <span className="body-sm" style={{ fontWeight: '500' }}>{user?.employee_id || 'N/A'}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="profile-section">
-          <h2>Change Password</h2>
-          <form onSubmit={handleSubmit} className="password-form">
-            <div className="form-group">
-              <label htmlFor="currentPassword">Current Password</label>
-              <div className="password-input-wrapper">
-                <input
-                  type={showPasswords.current ? 'text' : 'password'}
-                  id="currentPassword"
-                  name="currentPassword"
-                  value={formData.currentPassword}
-                  onChange={handleChange}
-                  required
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => togglePasswordVisibility('current')}
-                >
-                  {showPasswords.current ? (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <div className="card">
+          <div className="card-header">
+            <h3 className="card-header-title">Change Password</h3>
+          </div>
+          <div className="card-body">
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              <div className="form-group">
+                <label htmlFor="currentPassword" className="form-label is-required">Current Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showPasswords.current ? 'text' : 'password'}
+                    id="currentPassword"
+                    name="currentPassword"
+                    className="form-input"
+                    style={{ paddingRight: 'var(--space-10)' }}
+                    value={formData.currentPassword}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => togglePasswordVisibility('current')}
+                    style={{
+                      position: 'absolute',
+                      right: 'var(--space-3)',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      padding: 'var(--space-2)',
+                      cursor: 'pointer',
+                      color: 'var(--text-tertiary)',
+                      display: 'flex'
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      {showPasswords.current ? (
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      ) : (
+                        <>
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </>
+                      )}
                     </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </button>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="form-group">
-              <label htmlFor="newPassword">New Password</label>
-              <div className="password-input-wrapper">
-                <input
-                  type={showPasswords.new ? 'text' : 'password'}
-                  id="newPassword"
-                  name="newPassword"
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  required
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => togglePasswordVisibility('new')}
-                >
-                  {showPasswords.new ? (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <div className="form-group">
+                <label htmlFor="newPassword" className="form-label is-required">New Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showPasswords.new ? 'text' : 'password'}
+                    id="newPassword"
+                    name="newPassword"
+                    className="form-input"
+                    style={{ paddingRight: 'var(--space-10)' }}
+                    value={formData.newPassword}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                    placeholder="At least 6 characters"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => togglePasswordVisibility('new')}
+                    style={{
+                      position: 'absolute',
+                      right: 'var(--space-3)',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      padding: 'var(--space-2)',
+                      cursor: 'pointer',
+                      color: 'var(--text-tertiary)',
+                      display: 'flex'
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      {showPasswords.new ? (
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      ) : (
+                        <>
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </>
+                      )}
                     </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </button>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <div className="form-group">
-              <label htmlFor="confirmPassword">Confirm New Password</label>
-              <div className="password-input-wrapper">
-                <input
-                  type={showPasswords.confirm ? 'text' : 'password'}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  required
-                  disabled={loading}
-                />
-                <button
-                  type="button"
-                  className="password-toggle"
-                  onClick={() => togglePasswordVisibility('confirm')}
-                >
-                  {showPasswords.confirm ? (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <div className="form-group">
+                <label htmlFor="confirmPassword" className="form-label is-required">Confirm New Password</label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type={showPasswords.confirm ? 'text' : 'password'}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    className="form-input"
+                    style={{ paddingRight: 'var(--space-10)' }}
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                    disabled={loading}
+                    placeholder="Re-enter new password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => togglePasswordVisibility('confirm')}
+                    style={{
+                      position: 'absolute',
+                      right: 'var(--space-3)',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      padding: 'var(--space-2)',
+                      cursor: 'pointer',
+                      color: 'var(--text-tertiary)',
+                      display: 'flex'
+                    }}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      {showPasswords.confirm ? (
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      ) : (
+                        <>
+                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </>
+                      )}
                     </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </button>
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? (
-                <>
-                  <span className="spinner"></span>
-                  Updating...
-                </>
-              ) : (
-                'Update Password'
-              )}
-            </button>
-          </form>
+              <button type="submit" className={`btn btn-primary btn-lg ${loading ? 'is-loading' : ''}`} disabled={loading} style={{ width: '100%', marginTop: 'var(--space-2)' }}>
+                {loading ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
