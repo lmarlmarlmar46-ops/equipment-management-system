@@ -6,6 +6,36 @@
   margin: 0 auto;
 }
 
+/* Icon sizes */
+.icon {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-lg {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-xl {
+  width: 64px;
+  height: 64px;
+  opacity: 0.3;
+}
+
+.page-header h1 {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.page-header .subtitle {
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  margin-top: var(--spacing-xs);
+}
+
 .assignments-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));

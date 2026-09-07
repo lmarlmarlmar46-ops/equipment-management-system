@@ -14,7 +14,6 @@ import MainLayout from './components/MainLayout';
 // Pages
 import Dashboard from './components/Dashboard';
 import Equipment from './components/Equipment';
-import Employees from './components/Employees';
 import Allocations from './components/Allocations';
 import WorkAssignments from './components/WorkAssignments';
 import ITDashboard from './pages/ITDashboard';
@@ -51,7 +50,6 @@ function App() {
             {/* Common routes for all authenticated users */}
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="equipment" element={<Equipment />} />
-            <Route path="employees" element={<Employees />} />
             <Route path="allocations" element={<Allocations />} />
 
             {/* IT Operations routes (Admin & Manager only) */}
