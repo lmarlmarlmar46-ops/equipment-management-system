@@ -1,71 +1,34 @@
+/* =====================================================
+   EQUIPTRACK DESIGN SYSTEM
+   Import order: tokens → components → utilities
+   ===================================================== */
+
+/* Design Tokens (CSS Variables) */
+@import './styles/tokens.css';
+
+/* Core Components */
+@import './styles/components/buttons.css';
+@import './styles/components/forms.css';
+@import './styles/components/badges.css';
+@import './styles/components/cards.css';
+@import './styles/components/tables.css';
+
+/* Global Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  /* Light Mode (Default) */
-  --bg-primary: #f8f9fa;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f3f5;
-  
-  --text-primary: #212529;
-  --text-secondary: #6c757d;
-  --text-tertiary: #adb5bd;
-  
-  --border-color: #e9ecef;
-  --border-hover: #dee2e6;
-  
-  --accent-primary: #0066cc;
-  --accent-hover: #0052a3;
-  --accent-light: #e7f3ff;
-  
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="dark"] {
-  /* Dark Mode */
-  --bg-primary: #1a1d29;
-  --bg-secondary: #242735;
-  --bg-tertiary: #2d3142;
-  
-  --text-primary: #f8f9fa;
-  --text-secondary: #9ca3af;
-  --text-tertiary: #6b7280;
-  
-  --border-color: #374151;
-  --border-hover: #4b5563;
-  
-  --accent-primary: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-light: #1e3a8a;
-  
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --info: #3b82f6;
-  
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-}
-
+/* Base Styles */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  line-height: var(--leading-normal);
+  transition: background-color var(--duration-medium) ease, color var(--duration-medium) ease;
 }
 
 /* Scrollbar Styling */
@@ -79,10 +42,27 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 4px;
+  background: var(--border-primary);
+  border-radius: var(--radius-base);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+  background: var(--border-secondary);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
