@@ -111,9 +111,9 @@ const UserManagement = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', gap: 'var(--space-4)' }}>
         <div className="loading-spinner"></div>
-        <p>Loading users...</p>
+        <p className="body-base" style={{ color: 'var(--text-secondary)' }}>Loading users...</p>
       </div>
     );
   }
@@ -121,83 +121,103 @@ const UserManagement = () => {
   return (
     <div className="user-management">
       <div className="page-header">
-        <h1>User Management</h1>
-        <p>Manage user roles and permissions</p>
+        <div className="page-header-content">
+          <div>
+            <h1 className="heading-2">User Management</h1>
+            <p className="body-base" style={{ color: 'var(--text-secondary)' }}>
+              Manage user roles and permissions
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="users-table">
-        <table>
-          <thead>
-            <tr>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Status</th>
-              <th>Last Login</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(u => (
-              <tr key={u.id}>
-                <td>
-                  <strong>{u.username}</strong>
-                  {u.id === user.id && <span className="badge-you">You</span>}
-                </td>
-                <td>{u.email}</td>
-                <td>
-                  <span className={`role-badge ${getRoleBadgeClass(u.role)}`}>
-                    {u.role}
-                  </span>
-                </td>
-                <td>
-                  <span className={`status-badge status-${u.status}`}>
-                    {u.status}
-                  </span>
-                </td>
-                <td>
-                  {u.last_login 
-                    ? new Date(u.last_login).toLocaleDateString()
-                    : 'Never'
-                  }
-                </td>
-                <td>
-                  {u.id !== user.id && (
-                    <div className="action-buttons">
-                      {u.role !== 'admin' && (
-                        <button
-                          className="btn-promote"
-                          onClick={() => handlePromote(u.id, u.role)}
-                          disabled={promoting === u.id}
-                        >
-                          {promoting === u.id ? 'Processing...' : 'Promote'}
-                        </button>
-                      )}
-                      {u.role !== 'employee' && (
-                        <button
-                          className="btn-demote"
-                          onClick={() => handleDemote(u.id, u.role)}
-                          disabled={promoting === u.id}
-                        >
-                          {promoting === u.id ? 'Processing...' : 'Demote'}
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </td>
+      <div className="table-container">
+        <div className="table-wrapper">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Login</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map(u => (
+                <tr key={u.id}>
+                  <td data-label="Username">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                      <strong>{u.username}</strong>
+                      {u.id === user.id && <span className="badge badge-info" style={{ fontSize: 'var(--text-xs)' }}>You</span>}
+                    </div>
+                  </td>
+                  <td data-label="Email">{u.email}</td>
+                  <td data-label="Role">
+                    <span className={`badge ${
+                      u.role === 'admin' ? 'badge-error' :
+                      u.role === 'manager' ? 'badge-warning' :
+                      'badge-info'
+                    }`}>
+                      {u.role}
+                    </span>
+                  </td>
+                  <td data-label="Status">
+                    <span className={`badge ${u.status === 'active' ? 'badge-success' : 'badge-neutral'}`}>
+                      {u.status}
+                    </span>
+                  </td>
+                  <td data-label="Last Login">
+                    <span className="body-sm">
+                      {u.last_login 
+                        ? new Date(u.last_login).toLocaleDateString()
+                        : 'Never'
+                      }
+                    </span>
+                  </td>
+                  <td data-label="Actions">
+                    {u.id !== user.id && (
+                      <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+                        {u.role !== 'admin' && (
+                          <button
+                            className={`btn btn-sm btn-success ${promoting === u.id ? 'is-loading' : ''}`}
+                            onClick={() => handlePromote(u.id, u.role)}
+                            disabled={promoting === u.id}
+                          >
+                            {promoting === u.id ? 'Processing...' : 'Promote'}
+                          </button>
+                        )}
+                        {u.role !== 'employee' && (
+                          <button
+                            className={`btn btn-sm btn-secondary ${promoting === u.id ? 'is-loading' : ''}`}
+                            onClick={() => handleDemote(u.id, u.role)}
+                            disabled={promoting === u.id}
+                          >
+                            {promoting === u.id ? 'Processing...' : 'Demote'}
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="info-box">
-        <h3>Role Permissions</h3>
-        <ul>
-          <li><strong>Employee:</strong> Can request equipment, view own equipment, track requests</li>
-          <li><strong>Manager:</strong> Can approve requests, issue equipment, manage allocations + employee permissions</li>
-          <li><strong>Admin:</strong> Full system access, can promote users, manage all data</li>
-        </ul>
+      <div className="card" style={{ marginTop: 'var(--space-6)', background: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)' }}>
+        <div className="card-header">
+          <h3 className="card-header-title">Role Permissions</h3>
+        </div>
+        <div className="card-body">
+          <ul style={{ margin: 0, padding: '0 0 0 var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            <li className="body-sm"><strong>Employee:</strong> Can request equipment, view own equipment, track requests</li>
+            <li className="body-sm"><strong>Manager:</strong> Can approve requests, issue equipment, manage allocations + employee permissions</li>
+            <li className="body-sm"><strong>Admin:</strong> Full system access, can promote users, manage all data</li>
+          </ul>
+        </div>
       </div>
     </div>
   );
