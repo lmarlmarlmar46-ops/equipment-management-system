@@ -611,3 +611,183 @@ tbody tr:last-child td {
     width: 100%;
   }
 }
+
+
+/* ========================================
+   ENHANCED UI COMPONENTS
+   ======================================== */
+
+/* Refresh Data Button - More Visible */
+.btn-refresh,
+button[type="button"]:has(svg):not(.btn-primary):not(.btn-secondary) {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.625rem 1.25rem !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-refresh:hover {
+  background: var(--accent-hover) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Enhanced Search Bars */
+.search-input,
+input[type="text"][placeholder*="Search"],
+input[type="text"][placeholder*="search"] {
+  width: 100% !important;
+  max-width: 400px !important;
+  padding: 0.625rem 1rem 0.625rem 2.75rem !important;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  color: var(--text-primary) !important;
+  transition: all 0.2s ease !important;
+}
+
+.search-input:focus {
+  outline: none !important;
+  border-color: var(--accent-primary) !important;
+  background: var(--bg-secondary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.search-input::placeholder {
+  color: var(--text-tertiary) !important;
+}
+
+/* Search Icon Styling */
+.search-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+/* Enhanced Status Dropdown */
+select,
+.status-select {
+  padding: 0.625rem 2.5rem 0.625rem 1rem !important;
+  background: var(--bg-tertiary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.75rem center !important;
+  background-size: 16px !important;
+}
+
+select:focus {
+  outline: none !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+select option {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  padding: 0.5rem !important;
+}
+
+/* Promote/Demote Buttons */
+.btn-promote,
+button:contains("Promote") {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.375rem !important;
+}
+
+.btn-promote:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.btn-demote,
+button:contains("Demote") {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 6px !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.375rem !important;
+}
+
+.btn-demote:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Filter/Status Labels */
+.filter-label,
+label[for*="status"],
+label[for*="Status"] {
+  display: inline-block !important;
+  margin-right: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+/* Action Buttons Container */
+.action-buttons,
+.table-actions {
+  display: flex !important;
+  gap: 0.5rem !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+}
+
+/* Stats/Count Display */
+.stats-text,
+.count-text {
+  font-size: 0.875rem !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+/* Add Button Enhancement */
+.btn-add,
+button[type="button"]:has(svg):contains("Add") {
+  background: var(--accent-primary) !important;
+  color: white !important;
+}

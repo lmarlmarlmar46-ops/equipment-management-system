@@ -1,18 +1,18 @@
-/* Minimal Auth Pages */
+/* Auth Pages - Dark Mode Support */
 
 .auth-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   padding: 2rem 1rem;
 }
 
 .auth-card {
-  background: white;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   box-shadow: var(--shadow-lg);
   padding: 2.5rem;
   width: 100%;
@@ -76,14 +76,23 @@
 
 .form-group input {
   padding: 0.75rem;
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: 8px;
   font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: var(--accent-primary);
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--text-tertiary);
 }
 
 .form-hint {
@@ -108,17 +117,19 @@
   color: var(--accent-primary);
   text-decoration: none;
   font-weight: 500;
+  transition: opacity 0.2s ease;
 }
 
 .auth-footer .link:hover {
-  text-decoration: underline;
+  opacity: 0.8;
 }
 
 .demo-accounts {
   margin-top: 2rem;
   padding: 1rem;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
 .demo-accounts h3 {
@@ -144,8 +155,44 @@
   font-weight: 500;
 }
 
+/* Password Input Wrapper */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  padding-right: 3rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover svg {
+  color: var(--text-primary);
+}
+
 @media (max-width: 480px) {
   .auth-card {
     padding: 2rem 1.5rem;
   }
 }
+
