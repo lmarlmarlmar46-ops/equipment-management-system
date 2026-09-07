@@ -12,6 +12,7 @@
 @import './styles/components/badges.css';
 @import './styles/components/cards.css';
 @import './styles/components/tables.css';
+@import './styles/components/stats.css';
 
 /* Global Reset */
 * {
