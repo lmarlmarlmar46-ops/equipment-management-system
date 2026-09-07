@@ -220,13 +220,19 @@
   color: white;
 }
 
+/* Remove special styling for secondary button */
 .nav-button-secondary {
-  background: var(--accent-primary);
-  color: white;
+  background: transparent;
+  color: var(--text-secondary);
 }
 
 .nav-button-secondary:hover {
-  background: var(--accent-hover);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.nav-button-secondary.active {
+  background: var(--accent-primary);
   color: white;
 }
 
