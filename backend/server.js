@@ -18,6 +18,7 @@ const notificationsRouter = require('./routes/notifications');
 const depreciationRouter = require('./routes/depreciation');
 const bulkRouter = require('./routes/bulk');
 const workflowRouter = require('./routes/workflow');
+const workAssignmentsRouter = require('./routes/work-assignments');
 const seedRouter = require('./routes/seed');
 const testAuthRouter = require('./routes/test-auth');
 
@@ -90,6 +91,7 @@ app.use('/api/notifications', notificationsRouter);
 app.use('/api/depreciation', depreciationRouter);
 app.use('/api/bulk', bulkRouter);
 app.use('/api/workflow', workflowRouter);
+app.use('/api/work-assignments', workAssignmentsRouter);
 app.use('/api/seed', seedRouter);
 app.use('/api/test', testAuthRouter);
 

@@ -102,6 +102,19 @@ export const workflowAPI = {
 };
 
 // ============================================
+// WORK ASSIGNMENTS API (Task Management)
+// ============================================
+
+export const workAssignmentsAPI = {
+  getAll: (params) => api.get('/work-assignments', { params }),
+  getById: (id) => api.get(`/work-assignments/${id}`),
+  create: (assignmentData) => api.post('/work-assignments', assignmentData),
+  updateStatus: (id, statusData) => api.patch(`/work-assignments/${id}/status`, statusData),
+  delete: (id) => api.delete(`/work-assignments/${id}`),
+  getStats: () => api.get('/work-assignments/stats/overview'),
+};
+
+// ============================================
 // EMPLOYEES API
 // ============================================
 

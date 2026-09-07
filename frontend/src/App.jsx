@@ -16,6 +16,7 @@ import Dashboard from './components/Dashboard';
 import Equipment from './components/Equipment';
 import Employees from './components/Employees';
 import Allocations from './components/Allocations';
+import WorkAssignments from './components/WorkAssignments';
 import ITDashboard from './pages/ITDashboard';
 import MyEquipment from './pages/MyEquipment';
 import RequestEquipment from './pages/RequestEquipment';
@@ -95,6 +96,16 @@ function App() {
               element={
                 <ProtectedRoute>
                   <MyRequests />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Work Assignments (All authenticated users) */}
+            <Route
+              path="work-assignments"
+              element={
+                <ProtectedRoute>
+                  <WorkAssignments />
                 </ProtectedRoute>
               }
             />

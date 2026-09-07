@@ -239,6 +239,27 @@ async function initializeDatabase() {
       )
     `);
 
+    // Work assignments table
+    await query(`
+      CREATE TABLE IF NOT EXISTS work_assignments (
+        id SERIAL PRIMARY KEY,
+        assigned_to INTEGER NOT NULL,
+        assigned_by INTEGER NOT NULL,
+        task_description TEXT NOT NULL,
+        department TEXT,
+        location TEXT,
+        priority TEXT DEFAULT 'medium',
+        status TEXT DEFAULT 'pending',
+        due_date TIMESTAMP,
+        notes TEXT,
+        rejection_reason TEXT,
+        accepted_at TIMESTAMP,
+        completed_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     console.log('✅ Database tables initialized successfully');
   } catch (err) {
     console.error('❌ Error initializing database:', err);
