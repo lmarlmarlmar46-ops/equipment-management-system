@@ -133,7 +133,8 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="dark"
+          theme="light"
+          limit={3}
         />
       </AuthProvider>
     </Router>
