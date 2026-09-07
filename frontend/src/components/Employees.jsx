@@ -17,7 +17,8 @@ function Employees({ showToast }) {
     email: '',
     department: '',
     location: '',
-    status: 'active'
+    status: 'active',
+    available: true
   });
 
   useEffect(() => {
@@ -168,7 +169,8 @@ function Employees({ showToast }) {
       email: '',
       department: '',
       location: '',
-      status: 'active'
+      status: 'active',
+      available: true
     });
     setEditingId(null);
     setShowForm(false);
@@ -279,6 +281,28 @@ function Employees({ showToast }) {
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
+                <div className="form-group">
+                  <label className="form-label">Availability</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', background: 'var(--bg-tertiary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-primary)' }}>
+                    <input
+                      type="checkbox"
+                      id="available"
+                      checked={formData.available}
+                      onChange={(e) => setFormData({ ...formData, available: e.target.checked })}
+                      style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                    />
+                    <label htmlFor="available" style={{ cursor: 'pointer', margin: 0 }}>
+                      {formData.available ? (
+                        <span className="badge badge-success" style={{ fontSize: 'var(--text-sm)' }}>Available - Can be contacted</span>
+                      ) : (
+                        <span className="badge badge-neutral" style={{ fontSize: 'var(--text-sm)' }}>Busy - Do not disturb</span>
+                      )}
+                    </label>
+                  </div>
+                  <small className="caption" style={{ color: 'var(--text-tertiary)', marginTop: 'var(--space-1)', display: 'block' }}>
+                    When available, managers can contact this employee via email or phone
+                  </small>
+                </div>
               </div>
               <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'flex-end', marginTop: 'var(--space-4)' }}>
                 <button type="button" className="btn btn-secondary" onClick={resetForm}>
@@ -371,13 +395,14 @@ function Employees({ showToast }) {
                     <path d="M12 5L12 19M12 5L6 11M12 5L18 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </th>
+                <th>Availability</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredAndSortedEmployees.length === 0 ? (
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="7">
                     <div className="table-empty">
                       {searchQuery || filterStatus !== 'all' ? (
                         <>
@@ -448,6 +473,35 @@ function Employees({ showToast }) {
                       <span className={`badge ${employee.status === 'active' ? 'badge-success' : 'badge-neutral'}`}>
                         {employee.status}
                       </span>
+                    </td>
+                    <td data-label="Availability">
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                        <span style={{
+                          width: '8px',
+                          height: '8px',
+                          borderRadius: '50%',
+                          background: employee.available ? 'var(--success)' : 'var(--warning)',
+                          display: 'inline-block'
+                        }}></span>
+                        <span className="body-sm">
+                          {employee.available ? 'Available' : 'Busy'}
+                        </span>
+                        {employee.available && (
+                          <div style={{ display: 'flex', gap: 'var(--space-1)', marginLeft: 'var(--space-2)' }}>
+                            <a 
+                              href={`mailto:${employee.email}`}
+                              className="btn btn-sm btn-secondary"
+                              title="Send email"
+                              style={{ textDecoration: 'none', padding: 'var(--space-1) var(--space-2)' }}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
+                                <path d="M3 7L12 13L21 7" stroke="currentColor" strokeWidth="2"/>
+                              </svg>
+                            </a>
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td data-label="Actions">
                       <div className="row-actions">

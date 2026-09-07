@@ -12,12 +12,12 @@ class Employee {
 
   static create(data, callback) {
     const id = uuidv4();
-    const { name, email, department, location, status = 'active' } = data;
+    const { name, email, department, location, status = 'active', available = 1 } = data;
     
     db.run(
-      `INSERT INTO employees (id, name, email, department, location, status) 
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [id, name, email, department, location, status],
+      `INSERT INTO employees (id, name, email, department, location, status, available) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [id, name, email, department, location, status, available ? 1 : 0],
       function(err) {
         if (err) {
           callback(err);
@@ -29,13 +29,13 @@ class Employee {
   }
 
   static update(id, data, callback) {
-    const { name, email, department, location, status } = data;
+    const { name, email, department, location, status, available } = data;
     
     db.run(
       `UPDATE employees 
-       SET name = ?, email = ?, department = ?, location = ?, status = ?
+       SET name = ?, email = ?, department = ?, location = ?, status = ?, available = ?
        WHERE id = ?`,
-      [name, email, department, location, status, id],
+      [name, email, department, location, status, available ? 1 : 0, id],
       function(err) {
         if (err) {
           callback(err);

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Employee = require('../models/Employee');
+const { authenticateToken, requireRole } = require('../middleware/auth');
 
-// Get all employees
-router.get('/', (req, res) => {
+// Get all employees (any authenticated user can view)
+router.get('/', authenticateToken, (req, res) => {
   Employee.getAll((err, employees) => {
     if (err) {
       return res.status(500).json({ error: err.message });
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 // Get employee by ID
-router.get('/:id', (req, res) => {
+router.get('/:id', authenticateToken, (req, res) => {
   Employee.getById(req.params.id, (err, employee) => {
     if (err) {
       return res.status(500).json({ error: err.message });
@@ -26,7 +27,7 @@ router.get('/:id', (req, res) => {
 });
 
 // Get employee with their allocations
-router.get('/:id/allocations', (req, res) => {
+router.get('/:id/allocations', authenticateToken, (req, res) => {
   Employee.getWithAllocations(req.params.id, (err, data) => {
     if (err) {
       return res.status(500).json({ error: err.message });
@@ -35,8 +36,8 @@ router.get('/:id/allocations', (req, res) => {
   });
 });
 
-// Create new employee
-router.post('/', (req, res) => {
+// Create new employee (Admin/Manager only)
+router.post('/', authenticateToken, requireRole(['admin', 'manager']), (req, res) => {
   Employee.create(req.body, (err, employee) => {
     if (err) {
       return res.status(400).json({ error: err.message });
@@ -45,8 +46,8 @@ router.post('/', (req, res) => {
   });
 });
 
-// Update employee
-router.put('/:id', (req, res) => {
+// Update employee (Admin/Manager only)
+router.put('/:id', authenticateToken, requireRole(['admin', 'manager']), (req, res) => {
   Employee.update(req.params.id, req.body, (err, employee) => {
     if (err) {
       return res.status(400).json({ error: err.message });

@@ -41,6 +41,7 @@ function initializeDatabase() {
         department TEXT,
         location TEXT,
         status TEXT DEFAULT 'active',
+        available INTEGER DEFAULT 1,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
