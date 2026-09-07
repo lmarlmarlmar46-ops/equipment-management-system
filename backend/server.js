@@ -57,12 +57,17 @@ app.get('/', (req, res) => {
   });
 });
 
-// Middleware - Allow all origins for now (will restrict later)
+// Middleware - Allow all origins including Vercel
 app.use(cors({
-  origin: true,
+  origin: [
+    'https://equipment-management-system-9fq3.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173'
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'sec-ch-ua', 'sec-ch-ua-mobile', 'sec-ch-ua-platform'],
+  exposedHeaders: ['Content-Length', 'Content-Type']
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
