@@ -60,6 +60,7 @@ const optionalAuth = (req, res, next) => {
 module.exports = {
   authenticateToken,
   authorizeRole,
+  requireRole: authorizeRole, // Alias for backward compatibility
   optionalAuth,
   JWT_SECRET
 };
