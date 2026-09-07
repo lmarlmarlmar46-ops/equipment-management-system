@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 // Get API URL from environment or use Railway deployment
-const API_URL = import.meta.env.VITE_API_URL || 'https://equipment-management-system-production-7e9c.up.railway.app/api';
+const API_URL = import.meta.env.VITE_API_URL || 
+                process.env.VITE_API_URL || 
+                'https://equipment-management-system-production-7e9c.up.railway.app/api';
+
+console.log('API URL:', API_URL); // Debug log
 
 // Create axios instance with base configuration
 const api = axios.create({

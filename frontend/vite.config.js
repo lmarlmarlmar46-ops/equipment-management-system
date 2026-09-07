@@ -11,5 +11,9 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  // Ensure environment variables are exposed
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'https://equipment-management-system-production-7e9c.up.railway.app/api')
   }
 })
