@@ -57,46 +57,14 @@ app.get('/', (req, res) => {
   });
 });
 
-// Handle preflight requests explicitly
-app.options('*', cors());
-
-// Middleware - CORS configuration for Vercel frontend
+// Middleware - TEMPORARY: Allow all origins to diagnose CORS issue
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, Postman, or same-origin)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = [
-      'https://equipment-management-system-9fq3.vercel.app',
-      'http://localhost:3000',
-      'http://localhost:5173'
-    ];
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('Blocked origin:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Allow all origins temporarily
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'X-Requested-With',
-    'Accept',
-    'Origin',
-    'sec-ch-ua', 
-    'sec-ch-ua-mobile', 
-    'sec-ch-ua-platform',
-    'sec-fetch-site',
-    'sec-fetch-mode',
-    'sec-fetch-dest'
-  ],
+  allowedHeaders: ['*'],
   exposedHeaders: ['Content-Length', 'Content-Type'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  maxAge: 86400
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
