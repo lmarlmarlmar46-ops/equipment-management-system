@@ -14,130 +14,122 @@ class WorkAssignmentsWidget(QWidget):
     
     def init_ui(self):
         layout = QVBoxLayout()
-        layout.setContentsMargins(32, 32, 32, 32)
-        layout.setSpacing(24)
+        layout.setContentsMargins(40, 40, 40, 40)
+        layout.setSpacing(28)
         
-        # Header with modern design
-        header = QHBoxLayout()
-        
+        # Premium header design
         header_container = QWidget()
         header_container.setStyleSheet("""
-            background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 rgba(31, 111, 235, 0.1), stop:1 rgba(56, 139, 253, 0.05));
+            background: rgba(37, 99, 235, 0.08);
+            border: 1.5px solid rgba(96, 165, 250, 0.2);
             border-radius: 16px;
-            padding: 24px;
-            border: 2px solid rgba(88, 166, 255, 0.3);
+            padding: 28px 32px;
         """)
         header_layout = QVBoxLayout()
+        header_layout.setSpacing(12)
         
         title_row = QHBoxLayout()
-        title = QLabel('📋 Work Assignments')
-        title.setFont(QFont("Segoe UI", 28, QFont.Weight.Bold))
-        title.setStyleSheet('color: #e6edf3; background: transparent;')
+        title = QLabel('Work Assignments')
+        title.setFont(QFont("Segoe UI", 32, QFont.Weight.Bold))
+        title.setStyleSheet('color: #e3e8ee;')
         title_row.addWidget(title)
         title_row.addStretch()
         
-        subtitle = QLabel('Manage and track all work assignments')
-        subtitle.setStyleSheet('color: #8b949e; font-size: 14px; background: transparent; margin-top: 4px;')
+        if self.user['role'] in ['admin', 'manager']:
+            refresh_btn = QPushButton('Refresh')
+            refresh_btn.setStyleSheet("""
+                QPushButton {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                        stop:0 #059669, stop:1 #10b981);
+                    border: none;
+                    color: white;
+                    font-weight: 700;
+                    padding: 14px 28px;
+                    border-radius: 10px;
+                    font-size: 14px;
+                }
+                QPushButton:hover {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                        stop:0 #047857, stop:1 #059669);
+                }
+            """)
+            refresh_btn.clicked.connect(self.load_data)
+            title_row.addWidget(refresh_btn)
+        
+        subtitle = QLabel('Manage and track all work assignments across your team')
+        subtitle.setStyleSheet('color: #9ca3af; font-size: 14px; font-weight: 500;')
         
         header_layout.addLayout(title_row)
         header_layout.addWidget(subtitle)
         header_container.setLayout(header_layout)
         
-        header.addWidget(header_container)
+        layout.addWidget(header_container)
         
-        # Action buttons for managers
-        if self.user['role'] in ['admin', 'manager']:
-            btn_container = QWidget()
-            btn_container.setMaximumWidth(200)
-            btn_layout = QVBoxLayout()
-            btn_layout.setContentsMargins(0, 0, 0, 0)
-            btn_layout.setSpacing(8)
-            
-            refresh_btn = QPushButton('🔄  Refresh')
-            refresh_btn.setStyleSheet("""
-                QPushButton {
-                    background: #238636;
-                    border: 1px solid #2ea043;
-                    font-weight: 600;
-                    min-height: 40px;
-                }
-                QPushButton:hover {
-                    background: #2ea043;
-                }
-            """)
-            refresh_btn.clicked.connect(self.load_data)
-            btn_layout.addWidget(refresh_btn)
-            
-            btn_container.setLayout(btn_layout)
-            header.addWidget(btn_container)
-        
-        layout.addLayout(header)
-        
-        # Tabs with enhanced styling
+        # Premium tabs
         self.tabs = QTabWidget()
         self.tabs.setStyleSheet('''
             QTabWidget::pane {
-                border: 2px solid #30363d;
-                background: #0d1117;
-                border-radius: 12px;
-                padding: 16px;
+                border: 1.5px solid rgba(60, 70, 85, 0.4);
+                background: #0f1419;
+                border-radius: 14px;
+                padding: 20px;
             }
             QTabBar::tab {
-                background: #1c2128;
-                color: #8b949e;
-                padding: 14px 28px;
-                margin-right: 4px;
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
+                background: rgba(30, 35, 45, 0.6);
+                color: #9ca3af;
+                padding: 16px 32px;
+                margin-right: 6px;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
                 font-weight: 600;
-                font-size: 13px;
+                font-size: 14px;
             }
             QTabBar::tab:hover {
-                background: #2d333b;
-                color: #e6edf3;
+                background: rgba(45, 52, 70, 0.8);
+                color: #e3e8ee;
             }
             QTabBar::tab:selected {
-                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #1f6feb, stop:1 #388bfd);
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #2563eb, stop:1 #3b82f6);
                 color: white;
+                font-weight: 700;
             }
         ''')
         
-        # All assignments tab
+        # Tabs without emojis
         self.all_tab = self.create_assignments_list('all')
-        self.tabs.addTab(self.all_tab, '  📋 All  ')
+        self.tabs.addTab(self.all_tab, 'All Assignments')
         
         self.pending_tab = self.create_assignments_list('pending')
-        self.tabs.addTab(self.pending_tab, '  ⏳ Pending  ')
+        self.tabs.addTab(self.pending_tab, 'Pending')
         
         self.accepted_tab = self.create_assignments_list('accepted')
-        self.tabs.addTab(self.accepted_tab, '  ✅ Accepted  ')
+        self.tabs.addTab(self.accepted_tab, 'Accepted')
         
         self.completed_tab = self.create_assignments_list('completed')
-        self.tabs.addTab(self.completed_tab, '  🎉 Completed  ')
+        self.tabs.addTab(self.completed_tab, 'Completed')
         
         layout.addWidget(self.tabs)
         
-        # User list for managers with better styling
+        # Team members table
         if self.user['role'] in ['admin', 'manager']:
-            users_group = QGroupBox('👥 Team Members')
+            users_group = QGroupBox('Team Members')
             users_group.setStyleSheet('''
                 QGroupBox {
-                    color: #e6edf3;
-                    font-weight: bold;
-                    font-size: 16px;
-                    border: 2px solid #30363d;
-                    border-radius: 12px;
-                    padding: 20px;
-                    margin-top: 24px;
-                    background: #0d1117;
+                    color: #e3e8ee;
+                    font-weight: 700;
+                    font-size: 18px;
+                    border: 1.5px solid rgba(60, 70, 85, 0.4);
+                    border-radius: 14px;
+                    padding: 24px;
+                    margin-top: 28px;
+                    background: rgba(15, 20, 25, 0.5);
                 }
                 QGroupBox::title {
                     subcontrol-origin: margin;
-                    left: 16px;
-                    padding: 0 8px;
-                    color: #58a6ff;
+                    left: 20px;
+                    padding: 0 12px;
+                    color: #60a5fa;
                 }
             ''')
             users_layout = QVBoxLayout()
@@ -145,17 +137,17 @@ class WorkAssignmentsWidget(QWidget):
             self.users_table = QTableWidget()
             self.users_table.setStyleSheet('''
                 QTableWidget {
-                    background: #0d1117;
-                    color: #e6edf3;
-                    gridline-color: #30363d;
-                    border: 1px solid #30363d;
-                    border-radius: 8px;
-                    font-size: 13px;
+                    background: #0f1419;
+                    color: #e3e8ee;
+                    gridline-color: rgba(60, 70, 85, 0.3);
+                    border: 1px solid rgba(60, 70, 85, 0.3);
+                    border-radius: 10px;
+                    font-size: 14px;
                 }
                 QHeaderView::section {
-                    background: #161b22;
-                    color: #8b949e;
-                    padding: 12px 8px;
+                    background: rgba(30, 35, 45, 0.8);
+                    color: #9ca3af;
+                    padding: 14px 12px;
                     border: none;
                     border-bottom: 2px solid #30363d;
                     font-weight: 600;

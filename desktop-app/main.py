@@ -1,9 +1,9 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QLabel, QStackedWidget,
-                             QListWidget, QFrame, QScrollArea, QGraphicsOpacityEffect)
-from PyQt6.QtCore import Qt, QTimer, QPropertyAnimation, QEasingCurve, pyqtProperty
-from PyQt6.QtGui import QFont, QIcon, QPalette, QColor
+                             QFrame, QScrollArea, QGraphicsDropShadowEffect)
+from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtGui import QFont, QColor
 from database import Database
 from login_window import LoginWindow
 from work_assignments import WorkAssignmentsWidget
@@ -19,61 +19,57 @@ class MainWindow(QMainWindow):
     
     def init_ui(self):
         self.setWindowTitle("EquipTrack - Work Assignment Manager")
-        self.setGeometry(100, 100, 1500, 950)
+        self.setGeometry(80, 50, 1650, 1000)
         
-        # Enhanced modern stylesheet with better colors and effects
+        # Premium glassmorphism design
         self.setStyleSheet("""
             QMainWindow {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0a0e1a, stop:1 #1a1f2e);
+                background: #0a0e14;
             }
             QLabel {
-                color: #e6edf3;
+                color: #e3e8ee;
             }
             QPushButton {
-                background-color: #1c2128;
-                color: #e6edf3;
-                border: 1px solid #444c56;
-                border-radius: 8px;
-                padding: 10px 20px;
+                background: rgba(30, 35, 45, 0.95);
+                color: #b8c1d3;
+                border: 1.5px solid rgba(60, 70, 85, 0.6);
+                border-radius: 12px;
+                padding: 14px 20px;
                 font-size: 14px;
-                font-weight: 500;
+                font-weight: 600;
                 text-align: left;
             }
             QPushButton:hover {
-                background-color: #2d333b;
-                border-color: #58a6ff;
+                background: rgba(45, 52, 70, 1);
+                border: 1.5px solid rgba(88, 166, 255, 0.5);
+                color: #e3e8ee;
             }
             QPushButton:pressed {
-                background-color: #22272e;
+                background: rgba(35, 42, 58, 1);
             }
             QPushButton#activeTab {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #1f6feb, stop:1 #388bfd);
-                border-color: #58a6ff;
-                font-weight: 600;
+                    stop:0 #2563eb, stop:1 #3b82f6);
+                border: 1.5px solid #60a5fa;
+                color: white;
+                font-weight: 700;
             }
             QScrollBar:vertical {
                 border: none;
-                background: #0d1117;
-                width: 12px;
-                margin: 0px 0px 0px 0px;
-                border-radius: 6px;
+                background: rgba(20, 25, 35, 0.4);
+                width: 10px;
+                border-radius: 5px;
             }
             QScrollBar::handle:vertical {
-                background: #30363d;
-                min-height: 20px;
-                border-radius: 6px;
+                background: rgba(88, 166, 255, 0.3);
+                min-height: 30px;
+                border-radius: 5px;
             }
             QScrollBar::handle:vertical:hover {
-                background: #484f58;
-            }
-            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
-                height: 0px;
+                background: rgba(88, 166, 255, 0.5);
             }
         """)
         
-        # Show login window first
         self.show_login()
     
     def show_login(self):
@@ -86,26 +82,21 @@ class MainWindow(QMainWindow):
         self.setup_main_interface()
     
     def setup_main_interface(self):
-        # Main widget
         main_widget = QWidget()
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
         
-        # Sidebar
         sidebar = self.create_sidebar()
         main_layout.addWidget(sidebar)
         
-        # Content area with better background
         self.content_stack = QStackedWidget()
         self.content_stack.setStyleSheet("""
             QStackedWidget {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                    stop:0 #0d1117, stop:1 #161b22);
+                background: #0f1419;
             }
         """)
         
-        # Add pages
         self.work_assignments_page = WorkAssignmentsWidget(self.db, self.current_user)
         self.content_stack.addWidget(self.work_assignments_page)
         
@@ -118,137 +109,165 @@ class MainWindow(QMainWindow):
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
         
-        # Setup notification checking
         self.notification_timer = QTimer()
         self.notification_timer.timeout.connect(self.check_notifications)
-        self.notification_timer.start(30000)  # Check every 30 seconds
+        self.notification_timer.start(30000)
     
     def create_sidebar(self):
         sidebar = QFrame()
-        sidebar.setFixedWidth(280)
+        sidebar.setFixedWidth(300)
         sidebar.setStyleSheet("""
             QFrame {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                    stop:0 #161b22, stop:1 #0d1117);
-                border-right: 2px solid #30363d;
+                    stop:0 #1a1f2e, stop:1 #0f1419);
+                border-right: 1px solid rgba(60, 70, 85, 0.4);
             }
         """)
+        
+        # Add subtle shadow
+        shadow = QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(25)
+        shadow.setColor(QColor(0, 0, 0, 80))
+        shadow.setOffset(4, 0)
+        sidebar.setGraphicsEffect(shadow)
         
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
         
-        # Header with gradient
+        # Premium header
         header = QWidget()
         header.setStyleSheet("""
             background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-                stop:0 #1f6feb, stop:1 #388bfd);
-            padding: 24px;
-            border-bottom: 3px solid #58a6ff;
+                stop:0 #2563eb, stop:1 #1d4ed8);
+            padding: 28px 24px;
         """)
         header_layout = QVBoxLayout()
         
-        title = QLabel("⚡ EquipTrack")
-        title.setFont(QFont("Segoe UI", 22, QFont.Weight.Bold))
-        title.setStyleSheet("color: white; background: transparent;")
+        # App logo and title
+        title_container = QWidget()
+        title_container.setStyleSheet("background: transparent;")
+        title_layout = QHBoxLayout()
+        title_layout.setContentsMargins(0, 0, 0, 0)
         
-        subtitle = QLabel("Work Assignment Manager")
-        subtitle.setStyleSheet("color: rgba(255,255,255,0.9); font-size: 11px; background: transparent; margin-top: 2px;")
+        logo_label = QLabel("ET")
+        logo_label.setFont(QFont("Segoe UI", 20, QFont.Weight.Black))
+        logo_label.setStyleSheet("""
+            background: white;
+            color: #2563eb;
+            border-radius: 10px;
+            padding: 8px 12px;
+            min-width: 50px;
+            max-width: 50px;
+            min-height: 40px;
+            max-height: 40px;
+        """)
+        logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         
-        user_container = QWidget()
-        user_container.setStyleSheet("background: rgba(0,0,0,0.2); border-radius: 8px; padding: 12px; margin-top: 16px;")
+        title_text = QWidget()
+        title_text.setStyleSheet("background: transparent;")
+        title_text_layout = QVBoxLayout()
+        title_text_layout.setContentsMargins(12, 0, 0, 0)
+        title_text_layout.setSpacing(2)
+        
+        app_name = QLabel("EquipTrack")
+        app_name.setFont(QFont("Segoe UI", 20, QFont.Weight.Bold))
+        app_name.setStyleSheet("color: white; background: transparent;")
+        
+        app_subtitle = QLabel("Work Management")
+        app_subtitle.setStyleSheet("color: rgba(255,255,255,0.8); font-size: 12px; background: transparent;")
+        
+        title_text_layout.addWidget(app_name)
+        title_text_layout.addWidget(app_subtitle)
+        title_text.setLayout(title_text_layout)
+        
+        title_layout.addWidget(logo_label)
+        title_layout.addWidget(title_text)
+        title_layout.addStretch()
+        title_container.setLayout(title_layout)
+        
+        # User info card
+        user_card = QWidget()
+        user_card.setStyleSheet("""
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        """)
         user_layout = QVBoxLayout()
-        user_layout.setContentsMargins(0, 0, 0, 0)
+        user_layout.setSpacing(8)
         
-        user_label = QLabel(f"👤 {self.current_user['username']}")
-        user_label.setFont(QFont("Segoe UI", 12, QFont.Weight.DemiBold))
-        user_label.setStyleSheet("color: white; background: transparent;")
+        user_name = QLabel(self.current_user['username'])
+        user_name.setFont(QFont("Segoe UI", 13, QFont.Weight.DemiBold))
+        user_name.setStyleSheet("color: white; background: transparent;")
         
-        role_label = QLabel(f"{self.current_user['role'].upper()}")
-        role_badge = QLabel(f"  {self.current_user['role'].upper()}  ")
+        role_container = QWidget()
+        role_container.setStyleSheet("background: transparent;")
+        role_layout = QHBoxLayout()
+        role_layout.setContentsMargins(0, 0, 0, 0)
+        
+        role_badge = QLabel(self.current_user['role'].upper())
         role_badge.setStyleSheet("""
-            background: rgba(255,255,255,0.25);
+            background: rgba(255, 255, 255, 0.2);
             color: white;
             font-size: 10px;
-            font-weight: bold;
-            border-radius: 10px;
-            padding: 4px 10px;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 5px 12px;
+            letter-spacing: 0.5px;
         """)
-        role_badge.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
-        user_layout.addWidget(user_label)
-        user_layout.addWidget(role_badge)
-        user_container.setLayout(user_layout)
+        role_layout.addWidget(role_badge)
+        role_layout.addStretch()
+        role_container.setLayout(role_layout)
         
-        header_layout.addWidget(title)
-        header_layout.addWidget(subtitle)
-        header_layout.addWidget(user_container)
+        user_layout.addWidget(user_name)
+        user_layout.addWidget(role_container)
+        user_card.setLayout(user_layout)
+        
+        header_layout.addWidget(title_container)
+        header_layout.addWidget(user_card)
         header.setLayout(header_layout)
         layout.addWidget(header)
         
-        # Navigation buttons with better styling
+        # Navigation section
         nav_widget = QWidget()
         nav_layout = QVBoxLayout()
-        nav_layout.setContentsMargins(16, 24, 16, 16)
-        nav_layout.setSpacing(8)
+        nav_layout.setContentsMargins(20, 28, 20, 20)
+        nav_layout.setSpacing(10)
         
-        nav_title = QLabel("NAVIGATION")
-        nav_title.setStyleSheet("color: #7d8590; font-size: 11px; font-weight: bold; margin-bottom: 8px;")
+        nav_title = QLabel("MENU")
+        nav_title.setStyleSheet("color: #6b7280; font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 8px;")
         nav_layout.addWidget(nav_title)
         
-        self.work_btn = QPushButton("  📋  Work Assignments")
+        self.work_btn = QPushButton("Work Assignments")
         self.work_btn.setObjectName("activeTab")
-        self.work_btn.setMinimumHeight(48)
+        self.work_btn.setMinimumHeight(52)
         self.work_btn.clicked.connect(lambda: self.switch_page(0))
         nav_layout.addWidget(self.work_btn)
         
         if self.current_user['role'] in ['admin', 'manager']:
-            self.users_btn = QPushButton("  👥  User Management")
-            self.users_btn.setMinimumHeight(48)
+            self.users_btn = QPushButton("User Management")
+            self.users_btn.setMinimumHeight(52)
             self.users_btn.clicked.connect(lambda: self.switch_page(1))
             nav_layout.addWidget(self.users_btn)
         
         nav_layout.addStretch()
         
-        # Stats card (optional)
-        stats_card = QFrame()
-        stats_card.setStyleSheet("""
-            QFrame {
-                background: #1c2128;
-                border: 1px solid #444c56;
-                border-radius: 12px;
-                padding: 16px;
-                margin-bottom: 16px;
-            }
-        """)
-        stats_layout = QVBoxLayout()
-        
-        stats_title = QLabel("Quick Stats")
-        stats_title.setFont(QFont("Segoe UI", 11, QFont.Weight.Bold))
-        stats_title.setStyleSheet("color: #58a6ff; background: transparent;")
-        
-        stats_info = QLabel("📊 View your activity")
-        stats_info.setStyleSheet("color: #8b949e; font-size: 11px; background: transparent; margin-top: 4px;")
-        
-        stats_layout.addWidget(stats_title)
-        stats_layout.addWidget(stats_info)
-        stats_card.setLayout(stats_layout)
-        nav_layout.addWidget(stats_card)
-        
-        # Logout button with better styling
-        logout_btn = QPushButton("🚪  Logout")
-        logout_btn.setMinimumHeight(48)
+        # Logout button
+        logout_btn = QPushButton("Logout")
+        logout_btn.setMinimumHeight(52)
         logout_btn.setStyleSheet("""
             QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #da3633, stop:1 #f85149);
-                border: 1px solid #f85149;
-                color: white;
+                background: rgba(220, 38, 38, 0.1);
+                border: 1.5px solid rgba(239, 68, 68, 0.4);
+                color: #fca5a5;
                 font-weight: 600;
             }
             QPushButton:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #b62324, stop:1 #da3633);
+                background: rgba(220, 38, 38, 0.2);
+                border: 1.5px solid rgba(239, 68, 68, 0.6);
+                color: #fecaca;
             }
         """)
         logout_btn.clicked.connect(self.logout)
@@ -263,7 +282,6 @@ class MainWindow(QMainWindow):
     def switch_page(self, index):
         self.content_stack.setCurrentIndex(index)
         
-        # Update button styles
         if hasattr(self, 'work_btn'):
             self.work_btn.setObjectName("activeTab" if index == 0 else "")
             self.work_btn.setStyleSheet(self.styleSheet())
@@ -275,7 +293,6 @@ class MainWindow(QMainWindow):
     def check_notifications(self):
         notifications = self.db.get_unread_notifications(self.current_user['id'])
         if notifications:
-            # Update notification badge or show alert
             pass
     
     def logout(self):
