@@ -43,11 +43,9 @@ class MainWindow(QMainWindow):
             QPushButton:hover {
                 background-color: #2d333b;
                 border-color: #58a6ff;
-                transform: translateY(-2px);
             }
             QPushButton:pressed {
                 background-color: #22272e;
-                transform: translateY(0px);
             }
             QPushButton#activeTab {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
