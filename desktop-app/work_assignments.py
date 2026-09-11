@@ -219,23 +219,25 @@ class WorkAssignmentsWidget(QWidget):
                 self.users_table.setItem(i, 3, QTableWidgetItem(user['role']))
                 
                 assign_btn = QPushButton('Assign Work')
-                assign_btn.setFixedWidth(120)
+                assign_btn.setFixedWidth(130)
                 assign_btn.setStyleSheet('''
                     QPushButton {
-                        background: #0066ff;
+                        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                            stop:0 #6366f1, stop:1 #8b5cf6);
                         color: white;
                         font-weight: 600;
                         border: none;
-                        border-radius: 6px;
-                        padding: 8px 16px;
+                        border-radius: 8px;
+                        padding: 10px 18px;
                     }
                     QPushButton:hover {
-                        background: #0052cc;
+                        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                            stop:0 #5558e3, stop:1 #7c3aed);
                     }
                 ''')
                 assign_btn.clicked.connect(lambda checked, u=user: self.show_assign_dialog(u))
                 
-                # Center the button in the cell
+                # Center the button
                 btn_widget = QWidget()
                 btn_layout = QHBoxLayout()
                 btn_layout.setContentsMargins(0, 0, 0, 0)
