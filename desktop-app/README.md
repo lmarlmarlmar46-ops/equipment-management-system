@@ -24,31 +24,33 @@ A complete Python desktop application for IT asset and work assignment managemen
 
 ### Prerequisites
 
-1. **Install Python 3.9 or higher**
-   - Download from: https://www.python.org/downloads/
-   - **IMPORTANT**: Check "Add Python to PATH" during installation
+**Install Python 3.9 or higher:**
+- Download from: https://www.python.org/downloads/
+- **CRITICAL**: Check "Add Python to PATH" during installation
+- Restart your terminal after installation
 
-2. **Verify Python is installed:**
-   ```powershell
-   python --version
-   ```
+### Quick Install (3 Commands)
 
-### Setup Steps
+Open PowerShell and run:
 
-1. **Open PowerShell and navigate to the desktop-app folder:**
-   ```powershell
-   cd C:\Users\holog\OneDrive\Desktop\EquipTrack\desktop-app
-   ```
+```powershell
+cd C:\Users\holog\OneDrive\Desktop\EquipTrack\desktop-app
 
-2. **Install required packages:**
-   ```powershell
-   pip install -r requirements.txt
-   ```
+python check_requirements.py
 
-3. **Run the application:**
-   ```powershell
-   python main.py
-   ```
+python main.py
+```
+
+That's it! The check_requirements.py script will auto-install missing packages.
+
+### Manual Install
+
+If you prefer manual installation:
+
+```powershell
+pip install PyQt6 bcrypt python-dateutil
+python main.py
+```
 
 ## Usage
 

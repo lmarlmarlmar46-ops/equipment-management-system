@@ -79,7 +79,7 @@ if ($runNow -eq "Y" -or $runNow -eq "y") {
     python main.py
 } else {
     Write-Host ""
-    Write-Host "You can run EquipTrack anytime by double-clicking 'run.bat'" -ForegroundColor Cyan
+    Write-Host "You can run EquipTrack anytime by double-clicking run.bat" -ForegroundColor Cyan
     Write-Host ""
 }
 
