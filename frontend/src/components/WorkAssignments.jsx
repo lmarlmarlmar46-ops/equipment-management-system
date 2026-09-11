@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { workAssignmentsAPI, employeesAPI } from '../utils/api';
+import { workAssignmentsAPI, authAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import api from '../utils/api';
 import './WorkAssignments.css';
 
 function WorkAssignments() {
@@ -32,13 +33,31 @@ function WorkAssignments() {
     try {
       setLoading(true);
       const params = filter !== 'all' ? { status: filter } : {};
-      const [assignmentsRes, employeesRes] = await Promise.all([
-        workAssignmentsAPI.getAll(params),
-        isManagerOrAdmin ? employeesAPI.getAll() : Promise.resolve({ data: [] })
+      
+      // Fetch assignments and users (not employees)
+      const assignmentsPromise = workAssignmentsAPI.getAll(params);
+      const usersPromise = isManagerOrAdmin 
+        ? authAPI.getCurrentUser().then(() => api.get('/auth/users'))
+        : Promise.resolve({ data: { users: [] } });
+
+      const [assignmentsRes, usersRes] = await Promise.all([
+        assignmentsPromise,
+        usersPromise
       ]);
+      
       setAssignments(assignmentsRes.data);
       if (isManagerOrAdmin) {
-        setEmployees(employeesRes.data);
+        // Map users to look like employees
+        const usersList = usersRes.data.users || [];
+        const mappedUsers = usersList.map(u => ({
+          id: u.id,
+          full_name: u.username,
+          email: u.email,
+          phone: u.phone || 'N/A',
+          department: u.department || 'N/A',
+          available: u.status === 'active' ? 1 : 0
+        }));
+        setEmployees(mappedUsers);
       }
     } catch (error) {
       console.error('Error loading data:', error);
