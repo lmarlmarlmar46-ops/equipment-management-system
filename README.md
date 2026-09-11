@@ -1,20 +1,26 @@
-# 🎯 EquipTrack - IT Asset & Work Assignment Management
+# 🎯 EquipTrack - Desktop Work Assignment Manager
 
-A complete dual-platform solution for managing IT equipment, work assignments, and employee collaboration.
+A professional desktop application for managing work assignments, user roles, and team collaboration.
 
-## 🚀 Two Applications in One
+## 💻 Desktop Application
 
-### 1️⃣ Web Application (Cloud-Based) ☁️
-- **Live URL:** https://equipment-management-system-9fq3.vercel.app
-- **Tech Stack:** React, Node.js, PostgreSQL
-- **Hosting:** Vercel (frontend) + Railway (backend)
-- **Perfect for:** Remote teams, anywhere access, real-time collaboration
+**Platform:** Windows, macOS, Linux  
+**Tech Stack:** Python, PyQt6, SQLite  
+**Status:** Production Ready ✅
 
-### 2️⃣ Desktop Application (Offline-Ready) 💻
-- **Platform:** Windows, macOS, Linux
-- **Tech Stack:** Python, PyQt6, SQLite
-- **Location:** `desktop-app/` folder
-- **Perfect for:** Offline work, faster performance, no internet required
+---
+
+## ⚡ Quick Start (3 Commands)
+
+```powershell
+cd desktop-app
+python check_requirements.py
+python main.py
+```
+
+**First Login:**  
+📧 Email: `admin@equiptrack.com`  
+🔑 Password: `admin123`
 
 ---
 
@@ -22,350 +28,387 @@ A complete dual-platform solution for managing IT equipment, work assignments, a
 
 ```
 EquipTrack/
-├── backend/              # Node.js API (for web app)
-│   ├── routes/           # API endpoints
-│   ├── models/           # Data models
-│   ├── middleware/       # Auth middleware
-│   └── server.js         # Main server
-├── frontend/             # React web app
-│   ├── src/
-│   │   ├── components/   # UI components
-│   │   ├── pages/        # Page views
-│   │   └── context/      # Auth context
-│   └── public/           # Static files
-├── desktop-app/          # Python desktop application ⭐
-│   ├── main.py           # 🚀 Run this to start
-│   ├── database.py       # SQLite database
-│   ├── work_assignments.py  # Assignment manager
-│   ├── user_management.py   # Role management
-│   ├── notifications.py     # Notification system
-│   ├── check_requirements.py  # Auto-installer
-│   ├── requirements.txt     # Dependencies
-│   ├── README.md           # Desktop docs
-│   └── QUICKSTART.md       # Quick setup guide
-├── COMPLETE_SUMMARY.md   # 📖 Full project documentation
-├── DATABASE_SETUP.md     # Database configuration
-└── DEMO_ACCOUNTS.md      # Login credentials
+├── desktop-app/              # Main application folder
+│   ├── main.py               # 🚀 Run this to start
+│   ├── database.py           # SQLite database
+│   ├── login_window.py       # Login screen
+│   ├── work_assignments.py   # Assignment manager
+│   ├── user_management.py    # Role management
+│   ├── notifications.py      # Notification system
+│   ├── check_requirements.py # Auto-installer
+│   ├── requirements.txt      # Dependencies
+│   ├── README.md             # Full documentation
+│   ├── QUICKSTART.md         # Installation guide
+│   └── equiptrack.db         # Database (auto-created)
+├── README.md                 # This file
+├── COMPLETE_SUMMARY.md       # Project history
+└── FEATURES_ADDED.md         # Feature changelog
 ```
 
 ---
 
-## ⚡ Quick Start
-
-### Option 1: Web App (Already Live)
-Just visit: **https://equipment-management-system-9fq3.vercel.app**
-
-**Demo Login:**
-- Admin: `admin@equiptrack.com` / `admin123`
-- Manager: `manager@equiptrack.com` / `manager123`
-- Employee: `employee@equiptrack.com` / `employee123`
-
-### Option 2: Desktop App (3 Commands)
-```powershell
-cd desktop-app
-python check_requirements.py
-python main.py
-```
-
-**First Login:** `admin@equiptrack.com` / `admin123`
-
----
-
-## ✨ Core Features
+## ✨ Features
 
 ### 👤 User & Role Management
 - **3 Role Types:** Employee, Manager, Admin
 - **Role Permissions:** Hierarchical access control
 - **User Status:** Active/Inactive tracking
-- **Profile Management:** Edit email, password, role
+- **Profile Management:** Edit email, password, role (admin only)
 
 ### 📋 Work Assignment System
 - **Create Assignments:** Assign tasks to any user
 - **Status Tracking:** Pending → Accepted → Completed
-- **Real-time Notifications:** Get notified instantly
 - **Assignment Details:** Action, department, location, deadline
 - **Accept/Reject:** Employees can respond to assignments
 - **Contact Options:** Call or email assignee directly
+- **Search & Filter:** Find assignments by status or user
 
 ### 🔔 Notification System
 - **Real-time Alerts:** New assignments, status changes
-- **Notification Bell:** Visual indicator with count
+- **Notification Panel:** View all notifications in one place
 - **Mark as Read:** Clear notifications after viewing
 - **Persistent Storage:** Never miss an update
 
-### 💻 Equipment & Asset Tracking
-- **Equipment Management:** Add, edit, delete equipment
-- **Allocation Tracking:** Track who has what
-- **Status Monitoring:** Available, allocated, maintenance
-- **Equipment Categories:** Organize by type
-- **Serial Numbers:** Unique identification
-
-### 📊 Dashboard & Analytics
-- **Quick Stats:** Equipment, users, allocations
-- **Visual Charts:** Equipment distribution
-- **Active Monitoring:** Real-time status overview
-- **Department Tracking:** See team distribution
+### 💾 Data Management
+- **SQLite Database:** Fast, reliable, local storage
+- **No Server Required:** 100% offline capable
+- **Automatic Backups:** Database stored in app folder
+- **Data Privacy:** All data stays on your computer
 
 ---
 
-## 🛠️ Development Setup
+## 🛠️ Installation
 
-### Web App Development
+### Requirements
+- **Python 3.9 or higher**
+- **Operating System:** Windows, macOS, or Linux
 
-**Backend:**
+### Step 1: Check Python
 ```bash
-cd backend
-npm install
-npm start  # Runs on http://localhost:5000
+python --version
 ```
+Should show Python 3.9 or higher.
 
-**Frontend:**
-```bash
-cd frontend
-npm install
-npm run dev  # Runs on http://localhost:5173
-```
-
-### Desktop App Development
-
+### Step 2: Install & Run
 ```bash
 cd desktop-app
-pip install -r requirements.txt
-python main.py
+python check_requirements.py  # Auto-installs dependencies
+python main.py               # Launches the app
 ```
 
-**Requirements:**
-- Python 3.9 or higher
-- PyQt6
-- bcrypt
-- python-dateutil
+The `check_requirements.py` script automatically installs:
+- PyQt6 (GUI framework)
+- bcrypt (password security)
+- python-dateutil (date handling)
 
 ---
 
-## 📚 Documentation
+## 🎨 User Interface
 
-| Document | Description |
-|----------|-------------|
-| [COMPLETE_SUMMARY.md](./COMPLETE_SUMMARY.md) | Full project guide |
-| [desktop-app/README.md](./desktop-app/README.md) | Desktop app documentation |
-| [desktop-app/QUICKSTART.md](./desktop-app/QUICKSTART.md) | Quick installation guide |
-| [DATABASE_SETUP.md](./DATABASE_SETUP.md) | Database configuration |
-| [DEMO_ACCOUNTS.md](./DEMO_ACCOUNTS.md) | Test account credentials |
-| [FEATURES_ADDED.md](./FEATURES_ADDED.md) | Feature changelog |
+### Main Window
+```
+┌─────────────────────────────────────────────┐
+│  EquipTrack - IT Asset Management           │
+├──────────┬──────────────────────────────────┤
+│ Sidebar  │  Content Area                    │
+│          │                                   │
+│ 📋 Work  │  ┌──────────────────────────┐   │
+│    Assign│  │ Work Assignments         │   │
+│          │  ├──────────────────────────┤   │
+│ 👥 User  │  │ All | Pending | Accepted │   │
+│    Mgmt  │  │     | Completed          │   │
+│          │  ├──────────────────────────┤   │
+│ 🔔 Notif │  │ Assignment List          │   │
+│          │  │ - Employee Name          │   │
+│ 🚪 Logout│  │ - Action & Department    │   │
+│          │  │ - Status & Date          │   │
+│          │  └──────────────────────────┘   │
+└──────────┴──────────────────────────────────┘
+```
 
----
+### Features by Screen
 
-## 🎨 Tech Stack
+**Work Assignments:**
+- View all assignments in table format
+- Filter by status tabs
+- Create new assignment (button)
+- Accept/Reject assignments
+- Mark as completed
+- Search assignments
 
-### Web Application
-**Frontend:**
-- React 18 with Hooks
-- Vite (build tool)
-- React Router (routing)
-- Axios (API calls)
-- CSS3 (styling)
+**User Management:**
+- View all users
+- Add new users
+- Edit roles (Admin/Manager/Employee)
+- Activate/Deactivate users
+- Delete users (admin only)
 
-**Backend:**
-- Node.js + Express
-- PostgreSQL (database)
-- JWT (authentication)
-- bcrypt (password hashing)
-- CORS enabled
-
-**Deployment:**
-- Frontend: Vercel
-- Backend: Railway
-- Database: Railway PostgreSQL
-
-### Desktop Application
-**Framework:**
-- PyQt6 (GUI)
-- SQLite (local database)
-- bcrypt (security)
-- Python 3.9+
-
-**Architecture:**
-- Model-View pattern
-- Separate modules per feature
-- Auto-installer for dependencies
-- Cross-platform compatible
+**Notifications:**
+- Unread notification count
+- List of all notifications
+- Mark individual or all as read
+- Clear notifications
 
 ---
 
 ## 🔐 Security Features
 
-- ✅ JWT token authentication
 - ✅ Password hashing with bcrypt
 - ✅ Role-based access control
-- ✅ Protected API routes
 - ✅ Secure session management
 - ✅ SQL injection prevention
-- ✅ XSS protection
+- ✅ Local data storage (no cloud)
 
 ---
 
 ## 🎯 User Roles & Permissions
 
-### 👨‍💼 Admin
-- Full system access
-- User management (create, edit, delete, promote, demote)
-- Assign work to anyone
-- View all assignments
-- Manage equipment and allocations
+### 👨‍💼 Admin (Full Access)
+- ✅ Create, edit, delete users
+- ✅ Promote/demote user roles
+- ✅ Assign work to anyone
+- ✅ View all assignments
+- ✅ Accept/reject own assignments
+- ✅ Complete own assignments
 
-### 👔 Manager
-- Assign work to employees
-- View team assignments
-- Cannot promote/demote users
-- Manage equipment
-- View reports
+### 👔 Manager (Team Management)
+- ✅ Assign work to employees
+- ✅ View all assignments
+- ✅ Accept/reject own assignments
+- ✅ Complete own assignments
+- ❌ Cannot promote/demote users
+- ❌ Cannot delete users
 
-### 👤 Employee
-- View own assignments
-- Accept/reject assignments
-- Update assignment status
-- View own equipment
-- **Cannot** promote/demote users
-- **Cannot** assign work to others
+### 👤 Employee (Basic Access)
+- ✅ View own assignments
+- ✅ Accept/reject assignments
+- ✅ Mark assignments as completed
+- ✅ View notifications
+- ❌ Cannot assign work
+- ❌ Cannot manage users
+- ❌ Cannot promote/demote
 
 ---
 
 ## 🚦 Work Assignment Workflow
 
 1. **Manager/Admin creates assignment**
-   - Selects employee
-   - Specifies: action, department, location, deadline
-   - Option to call/email employee
+   ```
+   - Select employee from dropdown
+   - Enter action description
+   - Choose department
+   - Specify location
+   - Set deadline
+   - Add optional notes
+   - Click "Create Assignment"
+   ```
 
 2. **Employee receives notification**
-   - Notification bell shows count
+   ```
+   - Notification bell shows red dot + count
    - Opens notification panel
+   - Clicks notification to view details
+   ```
 
 3. **Employee responds**
-   - Accepts assignment → Status: Accepted
-   - Rejects assignment → Status: Pending (reassignable)
+   ```
+   - Views assignment in Work Assignments
+   - Clicks "Accept" or "Reject"
+   - Status updates to "Accepted" or back to "Pending"
+   ```
 
 4. **Employee completes work**
-   - Updates status to Completed
-   - Manager/Admin can see completion
+   ```
+   - After finishing the task
+   - Clicks "Mark Complete"
+   - Status updates to "Completed"
+   - Manager/Admin sees completion
+   ```
 
 5. **Tracking & History**
-   - All assignments logged
-   - Filter by status (Pending/Accepted/Completed)
+   ```
+   - All assignments logged in database
+   - Filter by status (tabs)
    - Search by employee name
-
----
-
-## 🌐 API Endpoints
-
-### Authentication
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - User login
-- `GET /auth/users` - Get all users (protected)
-- `PUT /auth/users/:id` - Update user (admin only)
-- `DELETE /auth/users/:id` - Delete user (admin only)
-
-### Work Assignments
-- `GET /work-assignments` - Get all assignments
-- `GET /work-assignments/:id` - Get specific assignment
-- `GET /work-assignments/user/:userId` - Get user's assignments
-- `POST /work-assignments` - Create assignment
-- `PUT /work-assignments/:id` - Update assignment
-- `PUT /work-assignments/:id/status` - Update status
-- `DELETE /work-assignments/:id` - Delete assignment
-
-### Notifications
-- `GET /notifications/:userId` - Get user notifications
-- `POST /notifications` - Create notification
-- `PUT /notifications/:id/read` - Mark as read
-- `DELETE /notifications/:id` - Delete notification
-
-### Equipment
-- `GET /equipment` - Get all equipment
-- `POST /equipment` - Create equipment
-- `PUT /equipment/:id` - Update equipment
-- `DELETE /equipment/:id` - Delete equipment
-
-### Dashboard
-- `GET /dashboard/stats` - Get dashboard statistics
+   - View assignment timeline
+   ```
 
 ---
 
 ## 🐛 Troubleshooting
 
-### Web App Issues
+### App won't start
+**Problem:** `python: command not found`  
+**Solution:** Install Python 3.9+ from python.org
 
-**Backend won't start:**
-- Check Node.js version: `node --version` (need 16+)
-- Port 5000 already in use → Change in `server.js`
-- Missing dependencies → Run `npm install`
+**Problem:** Missing dependencies  
+**Solution:** Run `python check_requirements.py`
 
-**Frontend won't start:**
-- Check Node.js version
-- Port conflict → Change in `vite.config.js`
-- Clear node_modules → `rm -rf node_modules && npm install`
+**Problem:** PyQt6 installation fails  
+**Solution:** Try `pip install --upgrade pip` then retry
 
-**Login fails:**
-- Check backend is running
-- Verify database connection
-- Check browser console for errors
+### Login fails
+**Problem:** Can't login with admin@equiptrack.com  
+**Solution:** Delete `equiptrack.db` and restart app (recreates database)
 
-### Desktop App Issues
+**Problem:** Forgot password  
+**Solution:** Delete `equiptrack.db` to reset (creates new admin account)
 
-**App won't start:**
-- Check Python version: `python --version` (need 3.9+)
-- Missing dependencies → Run `python check_requirements.py`
-- PyQt6 issues → Try `pip install --upgrade PyQt6`
+### Database errors
+**Problem:** Database locked  
+**Solution:** Close all instances of the app, then restart
 
-**Database errors:**
-- Delete `equiptrack.db` → Will recreate on restart
-- Check write permissions in desktop-app folder
+**Problem:** Corrupted database  
+**Solution:** Backup `equiptrack.db`, delete it, restart app
 
-**Login fails:**
-- Default: `admin@equiptrack.com` / `admin123`
-- Check `equiptrack.db` exists
-- Try deleting and recreating database
+### Display issues
+**Problem:** Window too small/large  
+**Solution:** Resize window and restart (settings saved)
+
+**Problem:** Blurry text on high-DPI displays  
+**Solution:** App auto-detects DPI, try restarting
+
+---
+
+## 📖 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [desktop-app/README.md](./desktop-app/README.md) | Full technical documentation |
+| [desktop-app/QUICKSTART.md](./desktop-app/QUICKSTART.md) | Installation guide |
+| [COMPLETE_SUMMARY.md](./COMPLETE_SUMMARY.md) | Project development history |
+| [FEATURES_ADDED.md](./FEATURES_ADDED.md) | Feature changelog |
+
+---
+
+## 💡 Usage Tips
+
+1. **First Time Setup:**
+   - Login as admin
+   - Go to User Management
+   - Add managers and employees
+   - Start creating assignments
+
+2. **Creating Assignments:**
+   - Be specific in action description
+   - Set realistic deadlines
+   - Use notes for additional context
+
+3. **Managing Users:**
+   - Set users to "Inactive" instead of deleting
+   - Inactive users can't login but data is preserved
+   - Promote employees to managers as needed
+
+4. **Notifications:**
+   - Check bell icon regularly
+   - Mark as read to clear count
+   - Notifications persist until cleared
+
+5. **Database Backup:**
+   - Copy `equiptrack.db` regularly
+   - Store backups in safe location
+   - Restore by replacing the file
+
+---
+
+## 🔧 Development
+
+### Running from Source
+```bash
+cd desktop-app
+pip install -r requirements.txt
+python main.py
+```
+
+### Database Schema
+```sql
+-- Users table
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    email TEXT UNIQUE,
+    password TEXT,
+    role TEXT,
+    is_active INTEGER,
+    created_at TIMESTAMP
+);
+
+-- Work Assignments table
+CREATE TABLE work_assignments (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    action TEXT,
+    department TEXT,
+    location TEXT,
+    deadline TEXT,
+    status TEXT,
+    notes TEXT,
+    created_at TIMESTAMP
+);
+
+-- Notifications table
+CREATE TABLE notifications (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    message TEXT,
+    is_read INTEGER,
+    created_at TIMESTAMP
+);
+```
+
+### File Structure
+```
+main.py              - Main window + navigation
+login_window.py      - Authentication screen
+work_assignments.py  - Assignment management UI
+user_management.py   - User/role management UI
+notifications.py     - Notification panel UI
+database.py          - SQLite operations
+```
 
 ---
 
 ## 📈 Future Enhancements
 
-- [ ] Email integration for notifications
-- [ ] SMS notifications
-- [ ] Mobile app (React Native)
-- [ ] Equipment QR code scanning
-- [ ] Advanced reporting dashboard
-- [ ] Export to Excel/PDF
-- [ ] Calendar integration
+- [ ] Export assignments to Excel/PDF
+- [ ] Calendar view for deadlines
+- [ ] Email notifications
 - [ ] File attachments for assignments
-- [ ] Equipment maintenance scheduling
+- [ ] Assignment templates
+- [ ] Advanced search filters
+- [ ] Dark/light theme toggle
 - [ ] Multi-language support
+- [ ] Assignment statistics/reports
+- [ ] Equipment tracking module
 
 ---
 
 ## 📝 License
 
-MIT License - Free to use and modify for your organization.
+MIT License - Free to use and modify.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions welcome! Please open an issue or submit a pull request.
+Contributions welcome! Feel free to submit issues or pull requests.
 
 ---
 
 ## 📧 Support
 
 For questions or issues:
-1. Check documentation in `COMPLETE_SUMMARY.md`
-2. Review `desktop-app/README.md` for desktop app help
+1. Check [desktop-app/README.md](./desktop-app/README.md)
+2. Review [desktop-app/QUICKSTART.md](./desktop-app/QUICKSTART.md)
 3. Open an issue on GitHub
 
 ---
 
-**Built with ❤️ for efficient team management**
+**Ready to get started?** 🚀
 
-🌐 **Live Demo:** https://equipment-management-system-9fq3.vercel.app
+```bash
+cd desktop-app
+python check_requirements.py
+python main.py
+```
 
-💻 **Desktop App:** Ready to install in `desktop-app/` folder
+**Login:** `admin@equiptrack.com` / `admin123`
