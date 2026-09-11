@@ -111,8 +111,8 @@ class MainWindow(QMainWindow):
         sidebar.setFixedWidth(250)
         sidebar.setStyleSheet("""
             QFrame {
-                background: #0066ff;
-                border-right: 1px solid #0052cc;
+                background: #000000;
+                border-right: 1px solid #1a1a1a;
             }
         """)
         
@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         # User info
         user_card = QWidget()
         user_card.setStyleSheet("""
-            background: rgba(255, 255, 255, 0.15);
+            background: #1a1a1a;
             border-radius: 10px;
             padding: 15px;
             margin-top: 20px;
@@ -160,7 +160,7 @@ class MainWindow(QMainWindow):
         
         role_badge = QLabel(self.current_user['role'].upper())
         role_badge.setStyleSheet("""
-            background: rgba(255, 255, 255, 0.25);
+            background: #0066ff;
             color: white;
             font-size: 10px;
             font-weight: 700;
@@ -178,7 +178,7 @@ class MainWindow(QMainWindow):
         
         # Navigation
         nav_label = QLabel("MENU")
-        nav_label.setStyleSheet("color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700; margin-top: 10px; margin-bottom: 10px; background: transparent;")
+        nav_label.setStyleSheet("color: #666666; font-size: 11px; font-weight: 700; margin-top: 10px; margin-bottom: 10px; background: transparent;")
         layout.addWidget(nav_label)
         
         self.work_btn = QPushButton("Work Assignments")
@@ -186,14 +186,14 @@ class MainWindow(QMainWindow):
         self.work_btn.setMinimumHeight(45)
         self.work_btn.setStyleSheet("""
             QPushButton {
-                background: white;
-                color: #0066ff;
+                background: #0066ff;
+                color: white;
                 border: none;
-                font-weight: 700;
+                font-weight: 600;
                 text-align: center;
             }
             QPushButton:hover {
-                background: #f0f0f0;
+                background: #0052cc;
             }
         """)
         self.work_btn.clicked.connect(lambda: self.switch_page(0))
@@ -204,15 +204,15 @@ class MainWindow(QMainWindow):
             self.users_btn.setMinimumHeight(45)
             self.users_btn.setStyleSheet("""
                 QPushButton {
-                    background: rgba(255, 255, 255, 0.15);
+                    background: #0066ff;
                     color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border: none;
                     font-weight: 600;
                     text-align: center;
                     margin-top: 10px;
                 }
                 QPushButton:hover {
-                    background: rgba(255, 255, 255, 0.25);
+                    background: #0052cc;
                 }
             """)
             self.users_btn.clicked.connect(lambda: self.switch_page(1))
@@ -225,14 +225,14 @@ class MainWindow(QMainWindow):
         logout_btn.setMinimumHeight(45)
         logout_btn.setStyleSheet("""
             QPushButton {
-                background: rgba(255, 0, 0, 0.2);
-                border: 1px solid rgba(255, 0, 0, 0.3);
+                background: #cc0000;
+                border: none;
                 color: white;
                 font-weight: 600;
                 text-align: center;
             }
             QPushButton:hover {
-                background: rgba(255, 0, 0, 0.3);
+                background: #990000;
             }
         """)
         logout_btn.clicked.connect(self.logout)
@@ -244,63 +244,35 @@ class MainWindow(QMainWindow):
     def switch_page(self, index):
         self.content_stack.setCurrentIndex(index)
         
+        # All buttons blue with white text
         if hasattr(self, 'work_btn'):
-            if index == 0:
-                self.work_btn.setStyleSheet("""
-                    QPushButton {
-                        background: white;
-                        color: #0066ff;
-                        border: none;
-                        font-weight: 700;
-                        text-align: center;
-                    }
-                    QPushButton:hover {
-                        background: #f0f0f0;
-                    }
-                """)
-            else:
-                self.work_btn.setStyleSheet("""
-                    QPushButton {
-                        background: rgba(255, 255, 255, 0.15);
-                        color: white;
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        font-weight: 600;
-                        text-align: center;
-                    }
-                    QPushButton:hover {
-                        background: rgba(255, 255, 255, 0.25);
-                    }
-                """)
+            self.work_btn.setStyleSheet("""
+                QPushButton {
+                    background: #0066ff;
+                    color: white;
+                    border: none;
+                    font-weight: 600;
+                    text-align: center;
+                }
+                QPushButton:hover {
+                    background: #0052cc;
+                }
+            """)
         
         if hasattr(self, 'users_btn'):
-            if index == 1:
-                self.users_btn.setStyleSheet("""
-                    QPushButton {
-                        background: white;
-                        color: #0066ff;
-                        border: none;
-                        font-weight: 700;
-                        text-align: center;
-                        margin-top: 10px;
-                    }
-                    QPushButton:hover {
-                        background: #f0f0f0;
-                    }
-                """)
-            else:
-                self.users_btn.setStyleSheet("""
-                    QPushButton {
-                        background: rgba(255, 255, 255, 0.15);
-                        color: white;
-                        border: 1px solid rgba(255, 255, 255, 0.2);
-                        font-weight: 600;
-                        text-align: center;
-                        margin-top: 10px;
-                    }
-                    QPushButton:hover {
-                        background: rgba(255, 255, 255, 0.25);
-                    }
-                """)
+            self.users_btn.setStyleSheet("""
+                QPushButton {
+                    background: #0066ff;
+                    color: white;
+                    border: none;
+                    font-weight: 600;
+                    text-align: center;
+                    margin-top: 10px;
+                }
+                QPushButton:hover {
+                    background: #0052cc;
+                }
+            """)
     
     def check_notifications(self):
         notifications = self.db.get_unread_notifications(self.current_user['id'])
